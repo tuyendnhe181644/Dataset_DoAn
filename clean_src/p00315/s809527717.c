@@ -1,0 +1,76 @@
+#include<stdio.h>
+int main(void)
+{
+	int C,n,d,r,c,flg[500][500],cnt,i,j,acnt,flg1;
+	char p[1000][1001];
+	scanf("%d %d",&C,&n);
+	for(i=0;i<n;i++){
+		scanf("%s",p[i]);
+	}
+	flg1=0;
+	cnt=0;
+	acnt=0;
+	for(i=0;i<n/2;i++){
+		for(j=0;j<n/2;j++){
+			flg[i][j]=0;
+			if(p[i][j]!=p[i][n-j-1]){
+				flg[i][j]=1;
+				cnt++;
+			}
+			if(flg[i][j]==0&&p[i][j]!=p[n-i-1][j]){
+				flg[i][j]=1;
+				cnt++;
+			}
+			if(flg[i][j]==0&&p[i][j]!=p[n-i-1][n-j-1]){
+				flg[i][j]=1;
+				cnt++;
+			}
+		}
+	}
+	if(cnt==0){
+		acnt++;
+	}
+	for(i=2;i<=C;i++){
+		scanf("%d",&d);
+		for(j=0;j<d;j++){
+			scanf("%d %d",&r,&c);
+			r=r-1;
+			c=c-1;
+			if(p[r][c]=='0'){
+				p[r][c]='1';
+			}
+			else{
+				p[r][c]='0';
+			}
+			if(r>=n/2){
+				r=n-r-1;
+			}
+			if(c>=n/2){
+				c=n-c-1;
+			}
+			flg1=0;
+			if(p[r][c]!=p[r][n-c-1]){
+				flg1=1;
+			}
+			if(p[r][c]!=p[n-r-1][c]){
+				flg1=1;
+			}
+			if(p[r][c]!=p[n-r-1][n-c-1]){
+			    flg1=1;
+			}
+			if(flg1==0&&flg[r][c]==1){
+				cnt=cnt-1;
+				flg[r][c]=0;
+			}
+			if(flg1==1&&flg[r][c]==0){
+				cnt++;
+				flg[r][c]=1;
+			}
+		}	
+		if(cnt<1){
+			acnt++;
+		}
+	}
+	printf("%d\n",acnt);
+	return 0;
+}

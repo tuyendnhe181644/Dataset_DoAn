@@ -1,0 +1,151 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#define MAX_N 10001
+
+//??±
+struct TPile{
+  int x; int y;
+};
+
+//?£?
+struct TFence{
+  double length;
+  int a,b;
+};
+ 
+typedef struct TPile Pile;
+typedef struct TFence Fence;
+
+  
+Pile *pile;
+Fence *fence;
+
+int par[MAX_N];
+int rank[MAX_N];
+ 
+//Union Find Tree?????????????????????
+//????????¶?????§??????????????????????????§???
+//?????¨??????????´???????????????????
+void init(int n){
+  int i;
+  for(i=0;i<n;i++){
+    par[i] = i;
+    rank[i] = 0;
+  }
+}
+
+
+//x?????????????´?????±??????????????????£??¨????????????
+int find(int x){
+  if(par[x]==x){
+    return x;
+  }else {
+    return par[x] = find(par[x]);
+  }
+}
+ 
+//x,y????±?????????????????????¨??????
+void unite(int x,int y){
+  x =find(x);
+  y =find(y);
+  if(x==y){
+    return ;
+  }
+  if(rank[x] < rank[y]){
+    par[x] = y;
+  }else {
+    par[y] = x;
+    if(rank[x] == rank[y])rank[x]++;
+  }
+}
+ 
+//x,y????±?????????????????????????????????????
+int same(int x,int y){
+  return find(x)==find(y);
+}
+ 
+//?????????????????????(Fence.length?????????)
+void FenceSort(int s,int e,Fence* array){
+  int i,j,k;
+  i=s-1;
+  j=e;
+  while(i<j){
+    while(++i<e&&array[i].length<array[e].length);
+    while(--j>=s&&array[j].length>=array[e].length);
+    if(i<j){
+      //??¢??°????????¨??????????????????
+      array[i].length+=array[j].length;
+      array[j].length=array[i].length-array[j].length;
+      array[i].length-=array[j].length;
+ 
+      array[i].a+=array[j].a;
+      array[j].a=array[i].a-array[j].a;
+      array[i].a-=array[j].a;
+ 
+      array[i].b+=array[j].b;
+      array[j].b=array[i].b-array[j].b;
+      array[i].b-=array[j].b;
+ 
+    }
+  }
+  if(i<e){
+    //?????????????????????
+ 
+    array[e].length+=array[i].length;
+    array[i].length=array[e].length-array[i].length;
+    array[e].length-=array[i].length;
+ 
+    array[e].a+=array[i].a;
+    array[i].a=array[e].a-array[i].a;
+    array[e].a-=array[i].a;
+ 
+    array[e].b+=array[i].b;
+    array[i].b=array[e].b-array[i].b;
+    array[e].b-=array[i].b;
+ 
+    i++;
+  }
+  if(s<j)FenceSort(s,j,array);
+  if(e>i)FenceSort(i,e,array);
+}
+ 
+int main(){
+  int n,m;
+  char s[16];
+  int i,j,a,b,d;
+  double res;
+  if(!fgets(s,16,stdin))return 1;
+  sscanf(s,"%d %d",&n,&m);
+  pile=(Pile*)malloc(sizeof(Pile)*(n+1));
+  fence=(Fence*)malloc(sizeof(Fence)*m);
+  for(i=1;i<=n;i++){
+    fgets(s,16,stdin);
+    sscanf(s,"%d %d",&a,&b);
+    pile[i].x=a;
+    pile[i].y=b;
+  }
+
+  for(i=0;i<m;i++){
+    fgets(s,16,stdin);
+    sscanf(s,"%d %d",&a,&b);
+    fence[i].a=a;
+    fence[i].b=b;
+    fence[i].length=sqrt((pile[a].x-pile[b].x)*(pile[a].x-pile[b].x)+(pile[a].y-pile[b].y)*(pile[a].y-pile[b].y));
+  }
+  
+  FenceSort(0,m-1,fence);
+  res=0;
+  init(n+1);
+  for(j=m-1;j>=0;j--){
+    if(!same(fence[j].a,fence[j].b)){
+      unite(fence[j].a,fence[j].b);
+    }else{
+      res+=fence[j].length;
+    }
+  }
+  free(pile);
+  free(fence);
+  printf("%lf\n",res);
+  return 0;
+}

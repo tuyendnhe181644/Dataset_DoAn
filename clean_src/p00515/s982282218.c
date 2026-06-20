@@ -1,0 +1,46 @@
+#include<stdio.h>
+int main(void)
+{
+	int a,b,c,d,e,sum,aum,bum;
+	sum=0;
+	aum=0;
+	bum=0;
+	scanf("%d",&a);
+	scanf("%d",&b);
+	scanf("%d",&c);
+	scanf("%d",&d);
+	scanf("%d",&e);
+	if(a<40){
+		sum=sum+40;
+	}
+	if(a>=40){
+		aum=aum+a;
+	}
+	if(b<40){
+		sum=sum+40;
+	}
+	if(b>=40){
+		aum=aum+b;
+	}
+	if(c<40){
+		sum=sum+40;
+	}
+	if(c>=40){
+		aum=aum+c;
+	}
+	if(d<40){
+		sum=sum+40;
+	}
+	if(d>=40){
+		aum=aum+d;
+	}
+	if(e<40){
+		sum=sum+40;
+	}
+	if(e>=40){
+		aum=aum+e;
+	}
+	bum=(aum+sum)/5;
+	printf("%d\n",bum);
+	return 0;
+}
