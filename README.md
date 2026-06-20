@@ -25,6 +25,14 @@ dataset/
 │   ├── p00001/
 │   │   └── s637528533.c
 │   └── ...
+├── input_output/
+│   ├── p00000/
+│   │   ├── input.txt
+│   │   └── output.txt
+│   ├── p00001/
+│   │   ├── input.txt
+│   │   └── output.txt
+│   └── ...
 ├── clean_src_metadata.csv
 └── README.md (File này)
 ```
@@ -33,7 +41,13 @@ dataset/
 1. **`clean_src/`**: Thư mục chứa các lời giải nguồn đã được làm sạch.
    - Mỗi thư mục con bên trong được đặt tên theo mã định danh bài toán (Ví dụ: `p00000`, `p00001`). Đây là **Mã bài toán đại diện** (ID nhỏ nhất trong nhóm trùng lặp) để đảm bảo bạn có thể ánh xạ trực tiếp sang file mô tả đề bài dạng HTML (Ví dụ: `p00000.html` trong thư mục `problem_descriptions/`).
    - Mỗi thư mục con chứa đúng **1 file lời giải duy nhất** dạng `.c` với tên file giữ nguyên mã submission gốc (Ví dụ: `s767811320.c`).
-2. **`clean_src_metadata.csv`**: File metadata lưu trữ thông tin chi tiết của từng lời giải được chọn và mối liên hệ giữa các bài toán trùng lặp.
+2. **`input_output/`**: Thư mục chứa các tệp dữ liệu kiểm thử mẫu tương ứng với các bài toán đã được lọc:
+   - Các thư mục con được đặt tên trùng khớp hoàn toàn với thư mục trong `clean_src/` (Mã bài toán đại diện `pXXXXX`).
+   - Mỗi thư mục con chứa:
+     - `input.txt`: Dữ liệu đầu vào mẫu (sample input).
+     - `output.txt`: Kết quả đầu ra mong đợi mẫu (sample output).
+   - Bộ dữ liệu có **2901** bài toán có sẵn đầy đủ dữ liệu kiểm thử mẫu này (109 bài còn lại không có sẵn dữ liệu kiểm thử mẫu từ bộ dữ liệu gốc).
+3. **`clean_src_metadata.csv`**: File metadata lưu trữ thông tin chi tiết của từng lời giải được chọn và mối liên hệ giữa các bài toán trùng lặp.
 
 ---
 
