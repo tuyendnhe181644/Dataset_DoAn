@@ -18,7 +18,7 @@ Bộ dữ liệu này được lọc từ Project_CodeNet với các tiêu chí 
 Thư mục dự án có cấu trúc như sau:
 
 ```text
-Dataset_DoAn/
+dataset_Ver2/
 ├── clean_src/
 │   ├── p00000/
 │   │   └── s767811320.c
@@ -35,19 +35,20 @@ Dataset_DoAn/
 │   └── ...
 ├── obfuscated_bin/
 │   ├── p00000/
-│   │   ├── s767811320_bcf.bin
-│   │   ├── s767811320_bcf_op.bin
+│   │   ├── s767811320_fla.bin
+│   │   ├── s767811320_op_fla.bin
 │   │   ├── s767811320_fla_bcf_instsub.bin
-│   │   └── ... (Chứa đủ tối đa 31 file nhị phân tổ hợp biến đổi từ s767811320.c)
+│   │   └── ... (đủ 7 tổ hợp nhị phân của s767811320)
 │   ├── p00001/
 │   │   ├── s637528533_fla.bin
-│   │   └── ...
+│   │   ├── s637528533_bcf_instsub.bin
+│   │   └── ... (đủ 7 tổ hợp nhị phân của s637528533)
 │   └── ...
 ├── clean_src_metadata.csv
 ├── metadata.json
 ├── obfuscate_dataset.py
-├── update_metadata.py
-└── README.md (File này)
+├── README.md (File này)
+└── update_metadata.py
 ```
 
 ### Chi tiết các thành phần:
@@ -97,22 +98,26 @@ Giả sử bài toán `p03195` và `p03197` trùng đề bài với nhau (thuộ
 Nhằm mục đích phục vụ nghiên cứu phát hiện lỗ hổng bảo mật và phân tích mã độc sử dụng kết hợp phân tích tĩnh (SAST) và phân tích động (DAST), toàn bộ mã nguồn sạch từ `clean_src` được làm rối bằng OLLVM.
 
 ### 4.1. Các kỹ thuật làm rối áp dụng (OLLVM Core Techniques)
-Sử dụng bộ công cụ OLLVM (dựa trên Clang-20 phát triển bởi vasie1337) với 5 kỹ thuật cốt lõi:
+Sử dụng bộ công cụ OLLVM (dựa trên Clang-14 phát triển bởi Heroims) với 3 kỹ thuật cốt lõi:
 1. **`FLA` (Flattening)**: Làm phẳng luồng điều khiển (Control Flow Flattening), chia nhỏ các khối cơ bản và đặt chúng vào trong một vòng lặp lớn chứa câu lệnh rẽ nhánh `switch-case`.
 2. **`BCF` (Bogus Control Flow)**: Tạo ra các nhánh rẽ điều khiển giả lập bằng cách thêm các khối lệnh rác và các biểu thức điều kiện luôn đúng/luôn sai (opaque predicates).
 3. **`INSTSUB` (Instruction Substitution)**: Thay thế các chỉ thị máy tiêu chuẩn bằng các tổ hợp câu lệnh tương đương phức tạp hơn (ví dụ: thay thế phép cộng `a + b` bằng các toán tử bitwise).
-4. **`MBA` (Mixed Boolean Arithmetic)**: Biến đổi các biểu thức số học tuyến tính thành các biểu thức hỗn hợp giữa logic Boolean và số học nhằm tăng độ phức tạp khi phân tích ngược.
-5. **`OP` (Bogus Operators)**: Làm mù các phép toán thông thường bằng cách chèn thêm các toán tử giả và các phép tính trung gian vô hiệu.
 
-Từ 5 kỹ thuật trên, hệ thống sinh ra tối đa **31 kịch bản tổ hợp làm rối** (từ chập 1 đến chập 5 phần tử) cho mỗi chương trình nguồn:
-* Suffix tên file nhị phân phản ánh chính xác tổ hợp kỹ thuật được bật (ví dụ: `s767811320_fla_bcf_mba.bin` tương ứng với tổ hợp FLA + BCF + MBA được bật; INSTSUB và OP được tắt).
+Từ 3 kỹ thuật trên, hệ thống sinh ra tối đa **7 kịch bản tổ hợp làm rối** (từ chập 1 đến chập 3 phần tử) cho mỗi chương trình nguồn:
+* Suffix tên file nhị phân phản ánh chính xác tổ hợp kỹ thuật được bật:
+  * `_fla.bin` (chỉ FLA)
+  * `_bcf.bin` (chỉ BCF)
+  * `_instsub.bin` (chỉ INSTSUB)
+  * `_fla_bcf.bin` (FLA + BCF)
+  * `_fla_instsub.bin` (FLA + INSTSUB)
+  * `_bcf_instsub.bin` (BCF + INSTSUB)
+  * `_fla_bcf_instsub.bin` (Cả 3 kỹ thuật FLA + BCF + INSTSUB)
 
 ### 4.2. Cấu hình trình biên dịch và đặc tính nhị phân
-* **Trình biên dịch**: `clang-20` nạp Custom Pass Plugin `obfuscator.so`.
+* **Trình biên dịch**: `llvm-clang-14` (OLLVM_Heroims_Legacy).
 * **Mức tối ưu hóa**: `-O0` (Ép giữ nguyên các cấu trúc phức tạp do OLLVM sinh ra, tránh việc trình biên dịch tối ưu hóa loại bỏ các khối lệnh giả).
 * **Trạng thái nhị phân**: **Stripped hoàn toàn** (`-Wl,-s`) để loại bỏ toàn bộ bảng ký hiệu (Symbol Table) và thông tin Debug.
-* **Chuẩn ngôn ngữ**: `-std=gnu99`.
-* **Liên kết thư viện**: Thư viện toán học hệ thống `-lm`.
+* **Tương thích & Vá lỗi Windows**: Tích hợp các macro vá lỗi biên dịch đặc thù trên môi trường Windows (`-D_CRT_NO_TIME_T`, `-Duint=unsigned int`...) giúp việc biên dịch thành công cho toàn bộ tập dữ liệu.
 
 ---
 
@@ -126,21 +131,21 @@ File `metadata.json` được viết dưới dạng mảng JSON (JSON Array) ch�
 | :--- | :--- | :--- | :--- |
 | **`problem_id`** | String | Mã thư mục bài toán gốc đại diện. | `"p00000"` |
 | **`submission_id`** | String | Mã định danh submission gốc của lời giải. | `"s767811320"` |
-| **`clean_source`** | String | Đường dẫn tương đối dẫn tới file mã nguồn sạch ban đầu. | `"clean_src/p00000/s767811320.c"` |
-| **`obfuscated_binary`** | String | Đường dẫn tương đối dẫn tới tệp nhị phân làm rối được sinh ra. | `"obfuscated_bin/p00000/s767811320_fla_bcf_instsub.bin"` |
-| **`compiler`** | String | Tên và phiên bản trình biên dịch được sử dụng. | `"clang-20"` |
+| **`clean_source`** | String | Đường dẫn tương đối dẫn tới file mã nguồn sạch ban đầu (dùng backslash trên Windows). | `"clean_src\\p00000\\s767811320.c"` |
+| **`obfuscated_binary`** | String | Đường dẫn tương đối dẫn tới tệp nhị phân làm rối được sinh ra. | `"obfuscated_bin\\p00000\\s767811320_fla_bcf_instsub.bin"` |
+| **`compiler`** | String | Tên và phiên bản trình biên dịch được sử dụng. | `"llvm-clang-14"` |
 | **`optimization_level`** | String | Mức độ tối ưu hóa khi biên dịch. | `"O0"` |
 | **`is_stripped`** | Boolean | Cho biết tệp nhị phân đã được stripped bỏ thông tin debug/symbol hay chưa. | `true` |
-| **`obfuscator`** | String | Tên công cụ / pass làm rối được áp dụng. | `"OLLVM_vasie1337"` |
+| **`obfuscator`** | String | Tên công cụ / pass làm rối được áp dụng. | `"OLLVM_Heroims_Legacy"` |
 | **`obfuscation_techniques`** | Array | Danh sách các kỹ thuật làm rối được kích hoạt (viết hoa). | `["FLA", "BCF", "INSTSUB"]` |
 | **`verification_status`** | String | Trạng thái kiểm thử động (chạy thử đầu vào/đầu ra mẫu). | `"SUCCESS"` |
 
 ### 5.2. Các giá trị trạng thái kiểm thử (`verification_status`)
 * **`SUCCESS`**: Chương trình chạy ra kết quả khớp hoàn toàn với đầu ra mẫu (`output.txt`) hoặc được bỏ qua do bài toán không có dữ liệu kiểm thử mẫu (`Skip`).
-* **`FAILED_OUTPUT_MISMATCH`**: Thực thi thành công nhưng kết quả đầu ra thực tế bị sai so với kết quả mẫu mong đợi.
-* **`FAILED_RUNTIME_ERROR`**: Xảy ra lỗi thời gian chạy (ví dụ: lỗi tràn bộ đệm, Segmentation fault, lỗi thư viện).
-* **`FAILED_TIMEOUT`**: Thời gian thực thi vượt quá giới hạn cho phép (3 giây).
-* **`FAILED`**: Lỗi hệ thống không xác định khác.
+* **`FAILED_OUTPUT MISMATCH`**: Thực thi thành công nhưng kết quả đầu ra thực tế bị sai so với kết quả mẫu mong đợi.
+* **`FAILED_RUNTIME ERROR`**: Xảy ra lỗi thời gian chạy (ví dụ: lỗi tràn bộ đệm, Segmentation fault, lỗi thư viện).
+* **`FAILED_TIMEOUT`**: Thời gian thực thi vượt quá giới hạn cho phép (2 giây).
+* **`FAILED_ERROR`**: Lỗi hệ thống không xác định khác hoặc tệp thực thi bị thiếu.
 
 ### 5.3. Ví dụ bản ghi metadata
 ```json
@@ -148,13 +153,17 @@ File `metadata.json` được viết dưới dạng mảng JSON (JSON Array) ch�
   {
     "problem_id": "p00000",
     "submission_id": "s767811320",
-    "clean_source": "clean_src/p00000/s767811320.c",
-    "obfuscated_binary": "obfuscated_bin/p00000/s767811320_fla_bcf_instsub.bin",
-    "compiler": "clang-20",
+    "clean_source": "clean_src\\p00000\\s767811320.c",
+    "obfuscated_binary": "obfuscated_bin\\p00000\\s767811320_fla_bcf_instsub.bin",
+    "compiler": "llvm-clang-14",
     "optimization_level": "O0",
     "is_stripped": true,
-    "obfuscator": "OLLVM_vasie1337",
-    "obfuscation_techniques": ["FLA", "BCF", "INSTSUB"],
+    "obfuscator": "OLLVM_Heroims_Legacy",
+    "obfuscation_techniques": [
+      "FLA",
+      "BCF",
+      "INSTSUB"
+    ],
     "verification_status": "SUCCESS"
   }
 ]
@@ -166,20 +175,20 @@ File `metadata.json` được viết dưới dạng mảng JSON (JSON Array) ch�
 
 ### 6.1. Biên dịch làm rối (`obfuscate_dataset.py`)
 Script này thực hiện:
-1. Sinh 31 tổ hợp kỹ thuật làm rối từ chập 1 đến chập 5 của `[fla, bcf, instsub, mba, op]`.
+1. Sinh 7 tổ hợp kỹ thuật làm rối từ chập 1 đến chập 3 của `[fla, bcf, instsub]`.
 2. Duyệt qua toàn bộ thư mục `clean_src/` để tìm file mã nguồn `.c`.
-3. Biên dịch chương trình bằng `clang-20` sử dụng các tham số cấu hình làm rối tương ứng, lưu kết quả vào thư mục `obfuscated_bin/`.
-4. Gọi hàm chạy thử với dữ liệu mẫu trong `input_output/` để xác định trạng thái thực thi động.
-5. Ghi các bản ghi nhãn thô và lưu tiến trình định kỳ vào `metadata.json`.
+3. Biên dịch chương trình bằng `llvm-clang-14` sử dụng các tham số cấu hình làm rối tương ứng, lưu kết quả vào thư mục `obfuscated_bin/`.
+4. Gọi hàm chạy thử với dữ liệu mẫu trong `input_output/` để xác định trạng thái thực thi động (với cơ chế CREATE_NO_WINDOW trên Windows và timeout 2s để tránh treo luồng).
+5. Ghi nhận dữ liệu nhãn và lưu tiến trình trực tiếp vào `metadata.json`.
 
 ### 6.2. Đồng bộ hóa và Cập nhật Metadata (`update_metadata.py`)
 Script này dùng để bảo trì và chuẩn hóa cơ sở dữ liệu nhãn:
 1. Đọc file `metadata.json` hiện có để lưu trữ bộ nhớ đệm trạng thái nhằm tối ưu tốc độ, tránh việc phải chạy lại các chương trình cũ.
-2. Quét đĩa tìm tất cả các binary trong thư mục `obfuscated_bin/`, tự động bóc tách suffix ở tên tệp nhị phân để chuẩn hóa sang mảng `obfuscation_techniques` chữ hoa.
+2. Quét đĩa tìm tất cả các binary trong thư mục `obfuscated_bin/`, tự động bóc tách suffix ở tên tệp nhị phân để chuẩn hóa sang mảng `obfuscation_techniques` chữ hoa đảm bảo đúng thứ tự xuất hiện.
 3. Gán đầy đủ thông tin chuẩn (`compiler`, `optimization_level`, `is_stripped`, v.v.).
 4. Thực hiện kiểm thử động đối với các tệp nhị phân mới được thêm vào.
-5. Sắp xếp lại toàn bộ cơ sở dữ liệu theo thứ tự tăng dần của `problem_id`, `submission_id`, và đường dẫn tệp nhị phân.
-6. Ghi đè tệp nhãn gốc một cách an toàn.
+5. Sắp xếp lại toàn bộ cơ sở dữ liệu theo thứ tự tăng dần của `problem_id`, `submission_id`, và thứ tự của kỹ thuật làm rối.
+6. Ghi đè tệp nhãn gốc một cách an toàn thông qua ghi đè tệp tạm (.tmp).
 
 ---
 
@@ -188,4 +197,4 @@ Script này dùng để bảo trì và chuẩn hóa cơ sở dữ liệu nhãn:
 * **Số lượng token tối thiểu**: 200 tokens.
 * **Số lượng token tối đa**: 7622 tokens.
 * **Trạng thái lời giải sạch (clean_src)**: 100% Accepted (đã qua kiểm tra chất lượng đề bài).
-* **Số lượng tệp nhị phân làm rối tối đa dự kiến**: 3010 × 31 = 93,310 tệp nhị phân nhãn.
+* **Số lượng tệp nhị phân làm rối tối đa dự kiến**: 3010 × 7 = 21,070 tệp nhị phân nhãn.

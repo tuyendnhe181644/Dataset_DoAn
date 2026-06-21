@@ -3,68 +3,113 @@ import os
 import json
 import subprocess
 import shutil
+from pathlib import Path
 
-# Config paths
-CLEAN_SRC_DIR = "clean_src"
-IO_DIR = "input_output"
-OBFUSCATED_BIN_DIR = "obfuscated_bin"
-METADATA_JSON_PATH = "metadata.json"
+# ==============================================================================
+# 1. CẤU HÌNH ĐƯỜNG DẪN THỰC TẾ ĐỒNG BỘ ĐỒ ÁN (Bản mới dùng Path)
+# ==============================================================================
+DATASET_DIR = Path(__file__).parent
 
-# 5 Core techniques
-VALID_TECHNIQUES = {"FLA", "BCF", "INSTSUB", "MBA", "OP"}
+CLEAN_SRC_DIR = DATASET_DIR / "clean_src"
+IO_DIR = DATASET_DIR / "input_output"
+OBFUSCATED_BIN_DIR = DATASET_DIR / "obfuscated_bin"
+METADATA_JSON_PATH = DATASET_DIR / "metadata.json"
 
-def verify_binary(binary_path, input_txt, output_txt):
-    """
-    Dynamically verify binary correctness against sample inputs/outputs.
-    Maps test results to: SUCCESS, FAILED_OUTPUT_MISMATCH, FAILED_RUNTIME_ERROR, FAILED_TIMEOUT, FAILED.
-    """
-    if not os.path.exists(input_txt) or not os.path.exists(output_txt):
-        return "SUCCESS" # Default to SUCCESS (corresponds to Skip in existing logic)
+# ==============================================================================
+# 2. ĐỊNH NGHĨA CHÍNH XÁC CÁC TỔ HỢP KỸ THUẬT LÀM RỐI
+# ==============================================================================
+COMBINATIONS = {
+    "fla": ["-mllvm", "-fla"],
+    "bcf": ["-mllvm", "-bcf"],
+    "instsub": ["-mllvm", "-sub"],
+    "fla_bcf": ["-mllvm", "-fla", "-mllvm", "-bcf"],
+    "fla_instsub": ["-mllvm", "-fla", "-mllvm", "-sub"],
+    "bcf_instsub": ["-mllvm", "-bcf", "-mllvm", "-sub"],
+    "fla_bcf_instsub": ["-mllvm", "-fla", "-mllvm", "-bcf", "-mllvm", "-sub"]
+}
+
+# Bản đồ ánh xạ tên kỹ thuật viết hoa để ghi log chuẩn vào metadata
+TECH_MAP = {
+    "fla": "FLA",
+    "bcf": "BCF",
+    "instsub": "INSTSUB"
+}
+
+COMBINATION_KEYS = list(COMBINATIONS.keys())
+
+# ==============================================================================
+# 3. LOGIC KIỂM TRA I/O (Đồng bộ chính xác từ obfuscate_dataset.py)
+# ==============================================================================
+def verify_binary(binary_path: Path, input_txt_path: Path, expected_output_txt_path: Path):
+    if not input_txt_path.exists() or not expected_output_txt_path.exists():
+        return "Skip"
+    if not binary_path.exists():
+        return "Error"
     try:
-        with open(input_txt, "r", encoding="utf-8") as f_in:
+        with open(input_txt_path, "r", encoding="utf-8", errors="ignore") as f_in:
             input_data = f_in.read()
             
-        with open(output_txt, "r", encoding="utf-8") as f_out:
+        with open(expected_output_txt_path, "r", encoding="utf-8", errors="ignore") as f_out:
             expected_lines = [line.strip() for line in f_out.read().strip().split("\n") if line.strip()]
             
+        # Tích hợp CREATE_NO_WINDOW để ép Windows giải phóng nhanh luồng vô hạn khi dính Timeout
         res = subprocess.run(
-            [os.path.abspath(binary_path)], 
+            [str(binary_path)], 
             input=input_data, 
             stdout=subprocess.PIPE, 
             stderr=subprocess.PIPE, 
             text=True, 
-            timeout=3
+            errors="ignore",  
+            timeout=2,  # Chờ tối đa 2 giây cho mỗi kịch bản test case I/O
+            creationflags=subprocess.CREATE_NO_WINDOW  
         )
         if res.returncode != 0:
-            return "FAILED_RUNTIME_ERROR"
+            return "Runtime Error"
             
         actual_lines = [line.strip() for line in res.stdout.strip().split("\n") if line.strip()]
         
         if actual_lines == expected_lines:
-            return "SUCCESS"
+            return "Pass"
         else:
-            return "FAILED_OUTPUT_MISMATCH"
+            return "Output Mismatch"
             
     except subprocess.TimeoutExpired:
-        return "FAILED_TIMEOUT"
+        print(f"   [⚠️ TIMEOUT] File chạy tốn quá nhiều thời gian (Vòng lặp vô hạn) -> Bỏ qua test")
+        return "Timeout"
     except Exception:
-        return "FAILED"
+        return "Error"
 
 def normalize_status(status):
-    """Normalize verification status string to uppercase and replace spaces with underscores."""
+    """Chuẩn hóa chuỗi trạng thái kiểm thử để đồng bộ với obfuscate_dataset.py."""
     if not status:
         return "SUCCESS"
-    status_str = str(status).strip().upper()
-    status_str = status_str.replace(" ", "_")
-    return status_str
+    status_upper = str(status).strip().upper()
+    
+    # Chuẩn hóa để nhận diện cache từ các định dạng khác nhau
+    if status_upper in ["PASS", "SKIP", "SUCCESS"]:
+        return "SUCCESS"
+    if status_upper in ["TIMEOUT", "FAILED_TIMEOUT"]:
+        return "FAILED_TIMEOUT"
+    if status_upper in ["OUTPUT MISMATCH", "FAILED_OUTPUT MISMATCH", "FAILED_OUTPUT_MISMATCH"]:
+        return "FAILED_OUTPUT MISMATCH"
+    if status_upper in ["RUNTIME ERROR", "FAILED_RUNTIME ERROR", "FAILED_RUNTIME_ERROR"]:
+        return "FAILED_RUNTIME ERROR"
+    if status_upper in ["ERROR", "FAILED_ERROR"]:
+        return "FAILED_ERROR"
+    return status_upper
+
+def normalize_path_for_lookup(path_str):
+    if not path_str:
+        return ""
+    return str(Path(path_str)).replace("\\", "/").lower()
 
 def main():
-    print("=== STARTING METADATA UPDATE PROCESS ===")
+    print("=== STARTING METADATA UPDATE & MAINTENANCE PROCESS ===")
 
-    # 1. Read existing metadata to preserve verification statuses
+    # 1. Đọc tệp metadata.json hiện tại để nạp bộ nhớ đệm trạng thái (Tránh chạy lại bài cũ)
     existing_status_map = {}
-    if os.path.exists(METADATA_JSON_PATH):
-        print(f"Reading existing metadata from: {METADATA_JSON_PATH}")
+    if METADATA_JSON_PATH.exists():
+        print(f"Reading existing metadata cache from: {METADATA_JSON_PATH}")
         try:
             with open(METADATA_JSON_PATH, "r", encoding="utf-8") as f:
                 entries = json.load(f)
@@ -72,99 +117,102 @@ def main():
                     bin_path = entry.get("obfuscated_binary")
                     status = entry.get("verification_status")
                     if bin_path:
-                        # Normalize path to ensure consistency
-                        norm_bin_path = bin_path.replace("\\", "/")
-                        existing_status_map[norm_bin_path] = normalize_status(status)
+                        norm_key = normalize_path_for_lookup(bin_path)
+                        existing_status_map[norm_key] = normalize_status(status)
         except Exception as e:
             print(f"Error reading existing metadata: {e}")
     else:
-        print("No existing metadata.json found. All verification statuses will be determined dynamically.")
+        print("No existing metadata.json found. All statuses will be computed dynamically.")
 
-    # 2. Scan obfuscated_bin directory for actual binary files
-    print(f"Scanning directory: {OBFUSCATED_BIN_DIR}")
-    if not os.path.exists(OBFUSCATED_BIN_DIR):
+    # 2. Quét thư mục obfuscated_bin để đồng bộ hóa thực tế đĩa cứng
+    print(f"Scanning storage directory: {OBFUSCATED_BIN_DIR}")
+    if not OBFUSCATED_BIN_DIR.exists():
         print(f"Error: Obfuscated binaries directory '{OBFUSCATED_BIN_DIR}' does not exist!")
         return
 
     updated_entries = []
     
-    # We will walk through the directory structure
-    for root, dirs, files in os.walk(OBFUSCATED_BIN_DIR):
-        rel_dir = os.path.relpath(root, OBFUSCATED_BIN_DIR)
-        if rel_dir == ".":
+    # Duyệt qua từng thư mục p00000, p00001...
+    for problem_id in sorted(os.listdir(OBFUSCATED_BIN_DIR)):
+        problem_dir = OBFUSCATED_BIN_DIR / problem_id
+        if not problem_dir.is_dir():
             continue
+            
+        input_txt = IO_DIR / problem_id / "input.txt"
+        output_txt = IO_DIR / problem_id / "output.txt"
         
-        problem_id = os.path.basename(root)
-        
-        for file in files:
-            if not file.endswith(".bin"):
+        # Duyệt qua các file nhị phân trong thư mục problem
+        for file_path in problem_dir.glob("*.bin"):
+            file_name = file_path.name
+            
+            # Trích xuất submission_id và mode_name dựa vào các key trong COMBINATIONS
+            mode_name = None
+            submission_id = None
+            for key in sorted(COMBINATIONS.keys(), key=len, reverse=True):
+                suffix = f"_{key}.bin"
+                if file_name.endswith(suffix):
+                    mode_name = key
+                    submission_id = file_name[:-len(suffix)]
+                    break
+            
+            if not mode_name or not submission_id:
+                # Không khớp với bất kỳ pattern làm rối nào đã biết
                 continue
                 
-            # Full path to the binary (relative to directory containing the script)
-            full_bin_path = os.path.join(root, file)
-            obfuscated_binary_rel = os.path.relpath(full_bin_path, start=".").replace("\\", "/")
+            obfuscated_binary_rel = str(file_path.relative_to(DATASET_DIR))
             
-            # Suffix parsing
-            # File name pattern: [submission_id]_[suffix].bin
-            name_without_ext = os.path.splitext(file)[0]
-            parts = name_without_ext.split("_")
-            submission_id = parts[0]
-            
-            # Extract suffix techniques
-            techniques = []
-            for part in parts[1:]:
-                tech_upper = part.upper()
-                if tech_upper in VALID_TECHNIQUES:
-                    techniques.append(tech_upper)
-                else:
-                    # Log warning or handle non-standard suffixes gracefully
-                    print(f"Warning: Non-standard technique suffix element '{part}' found in binary '{file}'")
-            
-            # Determine verification status
-            if obfuscated_binary_rel in existing_status_map:
-                verification_status = existing_status_map[obfuscated_binary_rel]
+            # Xác định nhãn trạng thái kiểm thử
+            norm_key = normalize_path_for_lookup(obfuscated_binary_rel)
+            if norm_key in existing_status_map:
+                verification_status = existing_status_map[norm_key]
             else:
-                # Fallback: dynamically verify the binary
-                input_txt = os.path.join(IO_DIR, problem_id, "input.txt")
-                output_txt = os.path.join(IO_DIR, problem_id, "output.txt")
-                verification_status = verify_binary(full_bin_path, input_txt, output_txt)
+                # Nếu phát hiện file mới, chạy verify_binary động
+                test_status = verify_binary(file_path, input_txt, output_txt)
+                verification_status = "SUCCESS" if test_status in ["Pass", "Skip"] else f"FAILED_{test_status.upper()}"
                 print(f"Dynamically verified new binary: {obfuscated_binary_rel} -> {verification_status}")
             
-            # Build clean source path
-            clean_source_rel = f"clean_src/{problem_id}/{submission_id}.c"
+            clean_source_rel = str((CLEAN_SRC_DIR / problem_id / f"{submission_id}.c").relative_to(DATASET_DIR))
             
+            # Tái tạo kỹ thuật làm rối theo đúng thứ tự xuất hiện của mode_name
+            tech_list_caps = [TECH_MAP[t] for t in mode_name.split("_") if t in TECH_MAP]
+            
+            # Khởi tạo log entry giống hệt cấu trúc của obfuscate_dataset.py
             entry = {
                 "problem_id": problem_id,
                 "submission_id": submission_id,
                 "clean_source": clean_source_rel,
                 "obfuscated_binary": obfuscated_binary_rel,
-                "compiler": "clang-20",
+                "compiler": "llvm-clang-14",
                 "optimization_level": "O0",
                 "is_stripped": True,
-                "obfuscator": "OLLVM_vasie1337",
-                "obfuscation_techniques": techniques,
+                "obfuscator": "OLLVM_Heroims_Legacy",
+                "obfuscation_techniques": tech_list_caps,
                 "verification_status": verification_status
             }
             updated_entries.append(entry)
 
-    # 3. Sort entries logically by problem_id, submission_id, then binary path
-    print("Sorting metadata entries...")
-    updated_entries.sort(key=lambda x: (x["problem_id"], x["submission_id"], x["obfuscated_binary"]))
+    # 3. Sắp xếp lại các bản ghi theo cấu trúc giống như thứ tự tạo ra của obfuscate_dataset.py
+    print("Sorting metadata database entries...")
+    updated_entries.sort(key=lambda x: (
+        x["problem_id"], 
+        x["submission_id"], 
+        COMBINATION_KEYS.index(Path(x["obfuscated_binary"]).name[len(x["submission_id"]) + 1 : -4]) if Path(x["obfuscated_binary"]).name[len(x["submission_id"]) + 1 : -4] in COMBINATION_KEYS else 999
+    ))
 
-    # 4. Write output to temporary file, then rename to replace metadata.json
-    temp_metadata_path = METADATA_JSON_PATH + ".tmp"
-    print(f"Writing updated metadata to temporary file: {temp_metadata_path}")
+    # 4. Ghi dữ liệu an toàn thông qua tệp tin tạm thời (Atomic Write)
+    temp_metadata_path = METADATA_JSON_PATH.parent / f"{METADATA_JSON_PATH.name}.tmp"
+    print(f"Writing updated database to temporary storage: {temp_metadata_path}")
     try:
         with open(temp_metadata_path, "w", encoding="utf-8") as f_out:
             json.dump(updated_entries, f_out, ensure_ascii=False, indent=2)
         
-        # Replace the original file atomically
+        # Đè tệp tin tạm thời vào file chính thức một cách an toàn
         shutil.move(temp_metadata_path, METADATA_JSON_PATH)
-        print(f"Successfully updated metadata file: {METADATA_JSON_PATH}")
-        print(f"Total entries processed: {len(updated_entries)}")
+        print(f"✨ SUCCESS: Successfully synchronized metadata file: {METADATA_JSON_PATH.name}")
+        print(f"Total verified binary entries active: {len(updated_entries)}")
     except Exception as e:
-        print(f"Error writing to metadata file: {e}")
-        if os.path.exists(temp_metadata_path):
+        print(f"🚨 Error writing database file: {e}")
+        if temp_metadata_path.exists():
             os.remove(temp_metadata_path)
 
 if __name__ == "__main__":
