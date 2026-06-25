@@ -19,7 +19,7 @@ Bộ dữ liệu này được lọc từ Project_CodeNet với các tiêu chí 
 Thư mục dự án có cấu trúc như sau:
 
 ```text
-dataset_Ver2/
+Dataset_DoAn/
 ├── clean_src/
 │   ├── p00001/
 │   │   └── s637528533.c
@@ -36,19 +36,22 @@ dataset_Ver2/
 │   └── ...
 ├── obfuscated_bin/
 │   ├── p00001/
-│   │   ├── s637528533_fla.bin
-│   │   ├── s637528533_bcf.bin
-│   │   ├── s637528533_fla_bcf_instsub.bin
+│   │   ├── s637528533_fla.elf
+│   │   ├── s637528533_bcf.elf
+│   │   ├── s637528533_fla_bcf_instsub.elf
 │   │   └── ... (đủ 7 tổ hợp nhị phân của s637528533)
 │   ├── p00002/
-│   │   ├── s312528849_fla.bin
+│   │   ├── s312528849_fla.elf
 │   │   └── ... (đủ 7 tổ hợp nhị phân của s312528849)
 │   └── ...
-├── Test Thực Nghiệm/
-│   ├── p00001/
-│   │   ├── s637528533_fla.bin
+├── Test_Thuc_Nghiem/
+│   ├── p00008/
+│   │   ├── s178043981.c (Mã nguồn C gốc)
 │   │   ├── input.txt
-│   │   └── output.txt
+│   │   ├── output.txt
+│   │   ├── s178043981_fla.elf
+│   │   ├── s178043981_bcf.elf
+│   │   └── ... (đủ cả 7 file nhị phân bị làm rối)
 │   └── ...
 ├── clean_src_metadata.csv
 ├── metadata.json
@@ -65,12 +68,15 @@ dataset_Ver2/
    - Mỗi thư mục con chứa:
      - `input.txt`: Dữ liệu đầu vào mẫu (sample input).
      - `output.txt`: Kết quả đầu ra mong đợi mẫu (sample output).
-   - Toàn bộ **2077** bài toán trong bộ dữ liệu đều có sẵn đầy đủ dữ liệu kiểm thử mẫu này.
+   - Toàn bộ **2035** bài toán trong bộ dữ liệu đều có sẵn đầy đủ dữ liệu kiểm thử mẫu này.
 3. **`obfuscated_bin/`**: Thư mục chứa các tệp nhị phân đã được biên dịch và áp dụng các tổ hợp làm rối mã nguồn C.
    - Các thư mục con tương ứng với mã bài toán `pXXXXX`.
-   - Mỗi tệp có định dạng tên: `[submission_id]_[suffix].bin`, trong đó `suffix` là chuỗi thể hiện các kỹ thuật làm rối được kích hoạt.
-4. **`Test Thực Nghiệm/`**: Thư mục con chứa tập mẫu dữ liệu thực nghiệm ngẫu nhiên bao gồm **280** bài toán có độ dài token từ thấp đến trung bình ($\le 1500$ tokens).
-   - Mỗi thư mục con đại diện cho một bài toán (Ví dụ: `p00001`), bên trong chứa đúng 1 file nhị phân làm rối duy nhất (phân bổ đều tỷ lệ làm rối 1:1 cho 7 tổ hợp kỹ thuật, tức 40 file cho mỗi loại) và các tệp dữ liệu kiểm thử `input.txt`/`output.txt` đi kèm để người dùng dễ dàng lấy ra chạy thực nghiệm trực tiếp.
+   - Mỗi tệp có định dạng tên: `[submission_id]_[suffix].elf`, trong đó `suffix` là chuỗi thể hiện các kỹ thuật làm rối được kích hoạt.
+4. **`Test_Thuc_Nghiem/`**: Thư mục con chứa tập mẫu dữ liệu thực nghiệm ngẫu nhiên bao gồm **210** bài toán có độ dài token từ thấp đến trung bình (độ dài token được chọn từ tập thấp đến trung bình).
+   - Mỗi thư mục con đại diện cho một bài toán (Ví dụ: `p00008`), bên trong chứa đúng:
+     - `[submission_id].c`: Mã nguồn C gốc (giữ nguyên tên gốc của lời giải bài toán).
+     - Đầy đủ cả 7 file nhị phân làm rối tương ứng với 7 kịch bản tổ hợp.
+     - Các tệp dữ liệu kiểm thử `input.txt`/`output.txt` đi kèm để người dùng dễ dàng lấy ra chạy thực nghiệm trực tiếp.
 5. **`clean_src_metadata.csv`**: File metadata lưu trữ thông tin chi tiết của từng lời giải mã nguồn C được chọn và mối liên hệ giữa các bài toán trùng lặp.
 6. **`metadata.json`**: File metadata chính thức dưới dạng mảng JSON (JSON Array), lưu trữ nhãn dữ liệu của toàn bộ tệp nhị phân làm rối phục vụ cho phân tích tĩnh/động.
 7. **`metadata.jsonl`**: Phiên bản định dạng JSON Lines của `metadata.json`, trong đó mỗi dòng là một đối tượng JSON độc lập giúp dễ dàng đọc/ghi tuần tự hoặc tích hợp vào các pipeline huấn luyện.
@@ -103,19 +109,18 @@ Sử dụng bộ công cụ OLLVM (dựa trên Clang-14 phát triển bởi Hero
 
 Từ 3 kỹ thuật trên, hệ thống sinh ra tối đa **7 kịch bản tổ hợp làm rối** (từ chập 1 đến chập 3 phần tử) cho mỗi chương trình nguồn:
 * Suffix tên file nhị phân phản ánh chính xác tổ hợp kỹ thuật được bật:
-  * `_fla.bin` (chỉ FLA)
-  * `_bcf.bin` (chỉ BCF)
-  * `_instsub.bin` (chỉ INSTSUB)
-  * `_fla_bcf.bin` (FLA + BCF)
-  * `_fla_instsub.bin` (FLA + INSTSUB)
-  * `_bcf_instsub.bin` (BCF + INSTSUB)
-  * `_fla_bcf_instsub.bin` (Cả 3 kỹ thuật FLA + BCF + INSTSUB)
+  * `_fla.elf` (chỉ FLA)
+  * `_bcf.elf` (chỉ BCF)
+  * `_instsub.elf` (chỉ INSTSUB)
+  * `_fla_bcf.elf` (FLA + BCF)
+  * `_fla_instsub.elf` (FLA + INSTSUB)
+  * `_bcf_instsub.elf` (BCF + INSTSUB)
+  * `_fla_bcf_instsub.elf` (Cả 3 kỹ thuật FLA + BCF + INSTSUB)
 
 ### 4.2. Cấu hình trình biên dịch và đặc tính nhị phân
-* **Trình biên dịch**: `llvm-clang-14` (OLLVM_Heroims_Legacy).
+* **Trình biên dịch**: `llvm-clang-14` (OLLVM_Heroims_NewPass).
 * **Mức tối ưu hóa**: `-O0` (Ép giữ nguyên các cấu trúc phức tạp do OLLVM sinh ra, tránh việc trình biên dịch tối ưu hóa loại bỏ các khối lệnh giả).
-* **Trạng thái nhị phân**: **Stripped hoàn toàn** (`-Wl,-s`) để loại bỏ toàn bộ bảng ký hiệu (Symbol Table) và thông tin Debug.
-* **Tương thích & Vá lỗi Windows**: Tích hợp các macro vá lỗi biên dịch đặc thù trên môi trường Windows (`-D_CRT_NO_TIME_T`, `-Duint=unsigned int`...) giúp việc biên dịch thành công cho toàn bộ tập dữ liệu.
+* **Trạng thái nhị phân**: **Stripped hoàn toàn** (`-Wl,-s` hoặc sử dụng `strip`) để loại bỏ toàn bộ bảng ký hiệu (Symbol Table) và thông tin Debug.
 
 ---
 
@@ -129,12 +134,14 @@ Cấu trúc đối tượng JSON ghi nhận thông tin đầy đủ của từng
 | :--- | :--- | :--- | :--- |
 | **`problem_id`** | String | Mã thư mục bài toán gốc đại diện. | `"p00001"` |
 | **`submission_id`** | String | Mã định danh submission gốc của lời giải. | `"s637528533"` |
-| **`clean_source`** | String | Đường dẫn tương đối dẫn tới file mã nguồn sạch ban đầu (dùng backslash trên Windows). | `"clean_src\\p00001\\s637528533.c"` |
-| **`obfuscated_binary`** | String | Đường dẫn tương đối dẫn tới tệp nhị phân làm rối được sinh ra. | `"obfuscated_bin\\p00001\\s637528533_fla_bcf_instsub.bin"` |
+| **`clean_source`** | String | Đường dẫn tương đối dẫn tới file mã nguồn sạch ban đầu. | `"clean_src/p00001/s637528533.c"` |
+| **`obfuscated_binary`** | String | Đường dẫn tương đối dẫn tới tệp nhị phân làm rối được sinh ra. | `"obfuscated_bin/p00001/s637528533_fla_bcf_instsub.elf"` |
+| **`input_file`** | String | Đường dẫn tương đối dẫn tới file input.txt. | `"input_output/p00001/input.txt"` |
+| **`output_file`** | String | Đường dẫn tương đối dẫn tới file output.txt. | `"input_output/p00001/output.txt"` |
 | **`compiler`** | String | Tên và phiên bản trình biên dịch được sử dụng. | `"llvm-clang-14"` |
 | **`optimization_level`** | String | Mức độ tối ưu hóa khi biên dịch. | `"O0"` |
 | **`is_stripped`** | Boolean | Cho biết tệp nhị phân đã được stripped bỏ thông tin debug/symbol hay chưa. | `true` |
-| **`obfuscator`** | String | Tên công cụ / pass làm rối được áp dụng. | `"OLLVM_Heroims_Legacy"` |
+| **`obfuscator`** | String | Tên công cụ / pass làm rối được áp dụng. | `"OLLVM_Heroims_NewPass"` |
 | **`obfuscation_techniques`** | Array | Danh sách các kỹ thuật làm rối được kích hoạt (viết hoa). | `["FLA", "BCF", "INSTSUB"]` |
 | **`verification_status`** | String | Trạng thái kiểm thử động (chạy thử đầu vào/đầu ra mẫu). | `"SUCCESS"` |
 
@@ -146,12 +153,14 @@ Do toàn bộ tập dữ liệu đã được lọc sạch nên trạng thái ki
 {
   "problem_id": "p00001",
   "submission_id": "s637528533",
-  "clean_source": "clean_src\\p00001\\s637528533.c",
-  "obfuscated_binary": "obfuscated_bin\\p00001\\s637528533_fla_bcf_instsub.bin",
+  "clean_source": "clean_src/p00001/s637528533.c",
+  "obfuscated_binary": "obfuscated_bin/p00001/s637528533_fla_bcf_instsub.elf",
+  "input_file": "input_output/p00001/input.txt",
+  "output_file": "input_output/p00001/output.txt",
   "compiler": "llvm-clang-14",
   "optimization_level": "O0",
   "is_stripped": true,
-  "obfuscator": "OLLVM_Heroims_Legacy",
+  "obfuscator": "OLLVM_Heroims_NewPass",
   "obfuscation_techniques": [
     "FLA",
     "BCF",
@@ -164,8 +173,8 @@ Do toàn bộ tập dữ liệu đã được lọc sạch nên trạng thái ki
 ---
 
 ## 6. Thống kê bộ dữ liệu (Dataset Statistics)
-* **Tổng số bài toán/mẫu độc lập**: 2,077 bài toán.
+* **Tổng số bài toán/mẫu độc lập**: 2,035 bài toán.
 * **Số lượng token tối thiểu**: 200 tokens.
 * **Số lượng token tối đa**: 7,622 tokens.
 * **Trạng thái lời giải sạch (clean_src)**: 100% Accepted (đã qua kiểm tra chất lượng đề bài).
-* **Số lượng tệp nhị phân làm rối thực tế**: 2,077 × 7 = 14,539 tệp nhị phân nhãn.
+* **Số lượng tệp nhị phân làm rối thực tế**: 2,035 × 7 = 14,245 tệp nhị phân nhãn.
