@@ -44,6 +44,12 @@ dataset_Ver2/
 │   │   ├── s312528849_fla.bin
 │   │   └── ... (đủ 7 tổ hợp nhị phân của s312528849)
 │   └── ...
+├── Test Thực Nghiệm/
+│   ├── p00001/
+│   │   ├── s637528533_fla.bin
+│   │   ├── input.txt
+│   │   └── output.txt
+│   └── ...
 ├── clean_src_metadata.csv
 ├── metadata.json
 ├── metadata.jsonl
@@ -63,9 +69,11 @@ dataset_Ver2/
 3. **`obfuscated_bin/`**: Thư mục chứa các tệp nhị phân đã được biên dịch và áp dụng các tổ hợp làm rối mã nguồn C.
    - Các thư mục con tương ứng với mã bài toán `pXXXXX`.
    - Mỗi tệp có định dạng tên: `[submission_id]_[suffix].bin`, trong đó `suffix` là chuỗi thể hiện các kỹ thuật làm rối được kích hoạt.
-4. **`clean_src_metadata.csv`**: File metadata lưu trữ thông tin chi tiết của từng lời giải mã nguồn C được chọn và mối liên hệ giữa các bài toán trùng lặp.
-5. **`metadata.json`**: File metadata chính thức dưới dạng mảng JSON (JSON Array), lưu trữ nhãn dữ liệu của toàn bộ tệp nhị phân làm rối phục vụ cho phân tích tĩnh/động.
-6. **`metadata.jsonl`**: Phiên bản định dạng JSON Lines của `metadata.json`, trong đó mỗi dòng là một đối tượng JSON độc lập giúp dễ dàng đọc/ghi tuần tự hoặc tích hợp vào các pipeline huấn luyện.
+4. **`Test Thực Nghiệm/`**: Thư mục con chứa tập mẫu dữ liệu thực nghiệm ngẫu nhiên bao gồm **280** bài toán có độ dài token từ thấp đến trung bình ($\le 1500$ tokens).
+   - Mỗi thư mục con đại diện cho một bài toán (Ví dụ: `p00001`), bên trong chứa đúng 1 file nhị phân làm rối duy nhất (phân bổ đều tỷ lệ làm rối 1:1 cho 7 tổ hợp kỹ thuật, tức 40 file cho mỗi loại) và các tệp dữ liệu kiểm thử `input.txt`/`output.txt` đi kèm để người dùng dễ dàng lấy ra chạy thực nghiệm trực tiếp.
+5. **`clean_src_metadata.csv`**: File metadata lưu trữ thông tin chi tiết của từng lời giải mã nguồn C được chọn và mối liên hệ giữa các bài toán trùng lặp.
+6. **`metadata.json`**: File metadata chính thức dưới dạng mảng JSON (JSON Array), lưu trữ nhãn dữ liệu của toàn bộ tệp nhị phân làm rối phục vụ cho phân tích tĩnh/động.
+7. **`metadata.jsonl`**: Phiên bản định dạng JSON Lines của `metadata.json`, trong đó mỗi dòng là một đối tượng JSON độc lập giúp dễ dàng đọc/ghi tuần tự hoặc tích hợp vào các pipeline huấn luyện.
 
 ---
 
