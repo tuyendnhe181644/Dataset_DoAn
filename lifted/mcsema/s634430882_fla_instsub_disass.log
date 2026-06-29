@@ -1,0 +1,1705 @@
+Debugging is enabled.
+Loading Standard Definitions file: /home/ubuntu/capstone_project/dependency/mcsema/mcsema/lib/python3/site-packages/mcsema_disass-3.1.3.8-py3.8.egg/mcsema_disass/defs/linux.txt
+Using Batch mode.
+Starting analysis
+Recovering module s634430882_fla_instsub.elf
+Found main at 4016e0
+Looking for instructions in segment .init
+  Default block heads for function 401000 with loose bounds [401000, 40101b)
+    block [401000, 401014)
+    block [401014, 401016)
+    block [401016, 40101b)
+    chunk [401000, 40101b)
+Looking for instructions in segment .plt
+  Default block heads for function 401020 with loose bounds [401020, 40102c)
+    block [401020, 40102c)
+    chunk [401020, 40102c)
+  Default block heads for function 401030 with loose bounds [401030, 401036)
+    block [401030, 401036)
+    chunk [401030, 401036)
+  Default block heads for function 401040 with loose bounds [401040, 401046)
+    block [401040, 401046)
+    chunk [401040, 401046)
+  Default block heads for function 401050 with loose bounds [401050, 401056)
+    block [401050, 401056)
+    chunk [401050, 401056)
+Looking for instructions in segment .text
+  Default block heads for function 401060 with loose bounds [401060, 401086)
+    block [401060, 401086)
+    chunk [401060, 401086)
+  Default block heads for function 4010a0 with loose bounds [4010a0, 4010c1)
+    block [4010a0, 4010ad)
+    block [4010ad, 4010b7)
+    block [4010b7, 4010be)
+    block [4010c0, 4010c1)
+    chunk [4010a0, 4010c1)
+  Default block heads for function 401110 with loose bounds [401110, 401131)
+    block [401110, 40111d)
+    block [40111d, 40112f)
+    block [401130, 401131)
+    chunk [401110, 401131)
+  Default block heads for function 401140 with loose bounds [401140, 401146)
+    block [401140, 401146)
+    chunk [401140, 401146)
+    chunk [4010d0, 401101)
+  Default block heads for function 401150 with loose bounds [401150, 401223)
+    block [401150, 40116e)
+    block [40116e, 40117f)
+    block [40117f, 401184)
+    block [401184, 401192)
+    block [401192, 401197)
+    block [401197, 4011a5)
+    block [4011a5, 4011aa)
+    block [4011aa, 4011af)
+    block [4011af, 4011fc)
+    block [4011fc, 401215)
+    block [401215, 40121e)
+    block [40121e, 401223)
+    chunk [401150, 401223)
+  Default block heads for function 401230 with loose bounds [401230, 401463)
+    block [401230, 401253)
+    block [401253, 401264)
+    block [401264, 401269)
+    block [401269, 401277)
+    block [401277, 40127c)
+    block [40127c, 40128a)
+    block [40128a, 40128f)
+    block [40128f, 40129d)
+    block [40129d, 4012a2)
+    block [4012a2, 4012b0)
+    block [4012b0, 4012b5)
+    block [4012b5, 4012c3)
+    block [4012c3, 4012c8)
+    block [4012c8, 4012d6)
+    block [4012d6, 4012db)
+    block [4012db, 4012e9)
+    block [4012e9, 4012ee)
+    block [4012ee, 4012fc)
+    block [4012fc, 401301)
+    block [401301, 40130f)
+    block [40130f, 401314)
+    block [401314, 401319)
+    block [401319, 401334)
+    block [401334, 401369)
+    block [401369, 401375)
+    block [401375, 40138e)
+    block [40138e, 4013ec)
+    block [4013ec, 4013f8)
+    block [4013f8, 40140e)
+    block [40140e, 40143b)
+    block [40143b, 401458)
+    block [401458, 40145e)
+    block [40145e, 401463)
+    chunk [401230, 401463)
+  Default block heads for function 401470 with loose bounds [401470, 4016d2)
+    block [401470, 401482)
+    block [401482, 401493)
+    block [401493, 401498)
+    block [401498, 4014a6)
+    block [4014a6, 4014ab)
+    block [4014ab, 4014b9)
+    block [4014b9, 4014be)
+    block [4014be, 4014cc)
+    block [4014cc, 4014d1)
+    block [4014d1, 4014df)
+    block [4014df, 4014e4)
+    block [4014e4, 4014f2)
+    block [4014f2, 4014f7)
+    block [4014f7, 401505)
+    block [401505, 40150a)
+    block [40150a, 401518)
+    block [401518, 40151d)
+    block [40151d, 40152b)
+    block [40152b, 401530)
+    block [401530, 40153e)
+    block [40153e, 401543)
+    block [401543, 401551)
+    block [401551, 401556)
+    block [401556, 401564)
+    block [401564, 401569)
+    block [401569, 40156e)
+    block [40156e, 401587)
+    block [401587, 4015af)
+    block [4015af, 4015cb)
+    block [4015cb, 4015e3)
+    block [4015e3, 401604)
+    block [401604, 401610)
+    block [401610, 401629)
+    block [401629, 40164e)
+    block [40164e, 40166a)
+    block [40166a, 4016a5)
+    block [4016a5, 4016cb)
+    block [4016cb, 4016cd)
+    block [4016cd, 4016d2)
+    chunk [401470, 4016d2)
+  Default block heads for function 4016e0 with loose bounds [4016e0, 401e05)
+    block [4016e0, 4016fb)
+    block [4016fb, 40170c)
+    block [40170c, 401711)
+    block [401711, 40171f)
+    block [40171f, 401724)
+    block [401724, 401732)
+    block [401732, 401737)
+    block [401737, 401745)
+    block [401745, 40174a)
+    block [40174a, 401758)
+    block [401758, 40175d)
+    block [40175d, 40176b)
+    block [40176b, 401770)
+    block [401770, 40177e)
+    block [40177e, 401783)
+    block [401783, 401791)
+    block [401791, 401796)
+    block [401796, 4017a4)
+    block [4017a4, 4017a9)
+    block [4017a9, 4017b7)
+    block [4017b7, 4017bc)
+    block [4017bc, 4017ca)
+    block [4017ca, 4017cf)
+    block [4017cf, 4017dd)
+    block [4017dd, 4017e2)
+    block [4017e2, 4017f0)
+    block [4017f0, 4017f5)
+    block [4017f5, 401803)
+    block [401803, 401808)
+    block [401808, 401816)
+    block [401816, 40181b)
+    block [40181b, 401829)
+    block [401829, 40182e)
+    block [40182e, 40183c)
+    block [40183c, 401841)
+    block [401841, 40184f)
+    block [40184f, 401854)
+    block [401854, 401862)
+    block [401862, 401867)
+    block [401867, 401875)
+    block [401875, 40187a)
+    block [40187a, 401888)
+    block [401888, 40188d)
+    block [40188d, 40189b)
+    block [40189b, 4018a0)
+    block [4018a0, 4018ae)
+    block [4018ae, 4018b3)
+    block [4018b3, 4018c1)
+    block [4018c1, 4018c6)
+    block [4018c6, 4018d4)
+    block [4018d4, 4018d9)
+    block [4018d9, 4018e7)
+    block [4018e7, 4018ec)
+    block [4018ec, 4018fa)
+    block [4018fa, 4018ff)
+    block [4018ff, 40190d)
+    block [40190d, 401912)
+    block [401912, 401920)
+    block [401920, 401925)
+    block [401925, 401933)
+    block [401933, 401938)
+    block [401938, 401946)
+    block [401946, 40194b)
+    block [40194b, 401959)
+    block [401959, 40195e)
+    block [40195e, 40196c)
+    block [40196c, 401971)
+    block [401971, 40197f)
+    block [40197f, 401984)
+    block [401984, 401992)
+    block [401992, 401997)
+    block [401997, 4019a5)
+    block [4019a5, 4019aa)
+    block [4019aa, 4019af)
+    block [4019af, 4019d1)
+    block [4019d1, 4019fb)
+    block [4019fb, 401a24)
+    block [401a24, 401a51)
+    block [401a51, 401a7e)
+    block [401a7e, 401a94)
+    block [401a94, 401abb)
+    block [401abb, 401ad8)
+    block [401ad8, 401aee)
+    block [401aee, 401afa)
+    block [401afa, 401b40)
+    block [401b40, 401b5b)
+    block [401b5b, 401b8e)
+    block [401b8e, 401bc7)
+    block [401bc7, 401bd3)
+    block [401bd3, 401bf4)
+    block [401bf4, 401c07)
+    block [401c07, 401c22)
+    block [401c22, 401c35)
+    block [401c35, 401c50)
+    block [401c50, 401c87)
+    block [401c87, 401ca0)
+    block [401ca0, 401cbb)
+    block [401cbb, 401cd6)
+    block [401cd6, 401cf7)
+    block [401cf7, 401d24)
+    block [401d24, 401d30)
+    block [401d30, 401d51)
+    block [401d51, 401d5d)
+    block [401d5d, 401d7c)
+    block [401d7c, 401d8f)
+    block [401d8f, 401daa)
+    block [401daa, 401dd3)
+    block [401dd3, 401dec)
+    block [401dec, 401df8)
+    block [401df8, 401e00)
+    block [401e00, 401e05)
+    chunk [4016e0, 401e05)
+Looking for instructions in segment .fini
+  Default block heads for function 401e08 with loose bounds [401e08, 401e15)
+    block [401e08, 401e15)
+    chunk [401e08, 401e15)
+Looking for strings in segment .rodata [402000, 402004)
+Looking for strings in segment .eh_frame_hdr [402004, 402048)
+Looking for strings in segment .eh_frame [402048, 402144)
+Looking for strings in segment .init_array [403de8, 403df0)
+Looking for strings in segment .fini_array [403df0, 403df8)
+Looking for strings in segment .got [403fd8, 403fe8)
+Looking for strings in segment .got.plt [403fe8, 404018)
+Looking for strings in segment .data [404020, 4040f0)
+Looking for strings in segment .bss [4040f0, 417a28)
+Looking for strings in segment extern [417a28, 417a50)
+Looking for cross-references in segment .init [401000, 40101b)
+Looking for cross-references in segment .plt [401020, 401060)
+  Stopping scan at 40102c
+Looking for cross-references in segment .text [401060, 401e05)
+  Stopping scan at 40108c
+  Stopping scan at 40109c
+  Stopping scan at ffffffffffffffff
+  Stopping scan at 4010cc
+  Stopping scan at 40110c
+  Stopping scan at ffffffffffffffff
+  Stopping scan at 40113c
+  Stopping scan at 40114c
+  Stopping scan at 40122c
+  Stopping scan at 40146c
+  Stopping scan at 4016dc
+Looking for cross-references in segment .fini [401e08, 401e15)
+Looking for cross-references in segment .rodata [402000, 402004)
+  Stopping scan at 402000
+Looking for cross-references in segment .eh_frame_hdr [402004, 402048)
+  Stopping scan at 402044
+Looking for cross-references in segment .eh_frame [402048, 402144)
+  Stopping scan at 402140
+Looking for cross-references in segment .init_array [403de8, 403df0)
+  Adding qword reference from 403de8 to 401140
+  Stopping scan at 403de8
+Looking for cross-references in segment .fini_array [403df0, 403df8)
+  Adding qword reference from 403df0 to 401110
+  Stopping scan at 403df0
+Looking for cross-references in segment .got [403fd8, 403fe8)
+  Adding qword reference from 403fd8 to 417a30
+  Adding qword reference from 403fe0 to 417a48
+  Stopping scan at 403fe0
+Looking for cross-references in segment .got.plt [403fe8, 404018)
+  Adding qword reference from 404000 to 417a28
+  Adding qword reference from 404008 to 417a38
+  Adding qword reference from 404010 to 417a40
+  Stopping scan at 404010
+Looking for cross-references in segment .data [404020, 4040f0)
+  Stopping scan at 4040ec
+Looking for cross-references in segment .bss [4040f0, 417a28)
+  Stopping scan at 417a24
+Looking for cross-references in segment extern [417a28, 417a50)
+  Stopping scan at 417a4c
+Looking for thunks
+  Found thunk for putchar targeting 417a28 at 401030
+  Found thunk for memset targeting 417a38 at 401040
+  Found thunk for getchar targeting 417a40 at 401050
+Looking for external symbols
+  Function at 401030 is the external function putchar
+  Function at 401040 is the external function memset
+  Function at 401050 is the external function getchar
+  Function at 417a28 is the external function putchar
+  Function at 417a30 is the external function __libc_start_main
+  Function at 417a38 is the external function memset
+  Function at 417a40 is the external function getchar
+  Function at 417a48 is the external function __gmon_start__
+Looking for entrypoints
+Recovering .init_proc at 401000
+  Analysing subroutine .init_proc at 401000
+    Block head at 0040101b is not code.
+  Subroutine .init_proc at 401000 has 3 blocks
+  BB: 401000 in func 401000 with 5 insts
+    Referenced by data
+    I: 401000
+    I: 401004
+    I: 401008 (mem 403fe0)
+    I: 40100f
+    I: 401012 (flow 401016)
+      Successors: 401014, 401016
+  BB: 401014 in func 401000 with 1 insts
+    I: 401014
+      Successors: 401016
+  BB: 401016 in func 401000 with 2 insts
+    I: 401016
+    I: 40101a
+      No successors
+Recovering 401020
+  Analysing subroutine sub_401020 at 401020
+  WARNING: No table entries for indirect jump at 401026; Adding next_ea 40102c as successor.
+  Subroutine sub_401020 at 401020 has 2 blocks
+  WARNING: No table entries for indirect jump at 401026; Adding next_ea 40102c as successor.
+  BB: 401020 in func 401020 with 2 insts
+    I: 401020 (mem 403ff0)
+    I: 401026 (mem 403ff8)
+      Successors: 40102c
+  BB: 40102c in func 401020 with 1 insts
+    I: 40102c
+      No successors
+Recovering start at 401060
+  Analysing subroutine start at 401060
+  Subroutine start at 401060 has 3 blocks
+  BB: 401060 in func 401060 with 13 insts
+    Referenced by data
+    I: 401060
+    I: 401064
+    I: 401066
+    I: 401069
+    I: 40106a
+    I: 40106d
+    I: 401071
+    I: 401072
+    I: 401073
+    I: 401076
+    I: 401078 (imm 4016e0)
+    I: 40107f (mem 403fd8)
+    I: 401085
+      No successors
+  BB: 401095 in func 401060 with 2 insts
+    I: 401095
+    I: 40109f
+      No successors
+  BB: 401086 in func 401060 with 3 insts
+    I: 401086
+    I: 401090
+    I: 401094
+      No successors
+Recovering 4010a0
+  Analysing subroutine sub_4010A0 at 4010a0
+  WARNING: No table entries for indirect jump at 4010bc; Adding next_ea 4010be as successor.
+  WARNING: No table entries for indirect jump at 4010fe; Adding next_ea 401100 as successor.
+  Subroutine sub_4010A0 at 4010a0 has 11 blocks
+  BB: 4010a0 in func 4010a0 with 3 insts
+    I: 4010a0 (imm 4040f0)
+    I: 4010a5 (imm 4040f0)
+    I: 4010ab (flow 4010c0)
+      Successors: 4010c0, 4010ad
+  BB: 4010c0 in func 4010a0 with 1 insts
+    I: 4010c0
+      No successors
+  BB: 4010c1 in func 4010a0 with 2 insts
+    I: 4010c1
+    I: 4010c5
+      Successors: 4010d0
+  BB: 401100 in func 4010a0 with 1 insts
+    I: 401100
+      No successors
+  BB: 401101 in func 4010a0 with 2 insts
+    I: 401101
+    I: 401105
+      No successors
+  BB: 4010ad in func 4010a0 with 3 insts
+    I: 4010ad
+    I: 4010b2
+    I: 4010b5 (flow 4010c0)
+      Successors: 4010c0, 4010b7
+  BB: 4010ef in func 4010a0 with 3 insts
+    I: 4010ef
+    I: 4010f4
+    I: 4010f7 (flow 401100)
+      Successors: 401100, 4010f9
+  BB: 4010d0 in func 4010a0 with 8 insts
+    I: 4010d0 (imm 4040f0)
+    I: 4010d5 (imm 4040f0)
+    I: 4010dc
+    I: 4010df
+    I: 4010e3
+    I: 4010e7
+    I: 4010ea
+    I: 4010ed (flow 401100)
+      Successors: 401100, 4010ef
+  WARNING: No table entries for indirect jump at 4010bc; Adding next_ea 4010be as successor.
+  BB: 4010b7 in func 4010a0 with 2 insts
+    I: 4010b7 (imm 4040f0)
+    I: 4010bc
+      Successors: 4010be
+  WARNING: No table entries for indirect jump at 4010fe; Adding next_ea 401100 as successor.
+  BB: 4010f9 in func 4010a0 with 2 insts
+    I: 4010f9 (imm 4040f0)
+    I: 4010fe
+      Successors: 401100
+  BB: 4010be in func 4010a0 with 1 insts
+    I: 4010be
+      Successors: 4010c0
+Recovering 401110
+  Analysing subroutine sub_401110 at 401110
+  Subroutine sub_401110 at 401110 has 5 blocks
+  BB: 40112f in func 401110 with 1 insts
+    I: 40112f
+      Successors: 401130
+  BB: 401110 in func 401110 with 3 insts
+    Referenced by data
+    I: 401110
+    I: 401114 (mem 4040f0)
+    I: 40111b (flow 401130)
+      Successors: 401130, 40111d
+  BB: 401131 in func 401110 with 2 insts
+    I: 401131
+    I: 401135
+      No successors
+  BB: 401130 in func 401110 with 1 insts
+    I: 401130
+      No successors
+  BB: 40111d in func 401110 with 6 insts
+    I: 40111d
+    I: 40111e
+    I: 401121 (flow 4010a0)
+    I: 401126 (mem 4040f0)
+    I: 40112d
+    I: 40112e
+      No successors
+Recovering 401140
+  Analysing subroutine sub_401140 at 401140
+  WARNING: No table entries for indirect jump at 4010fe; Adding next_ea 401100 as successor.
+  Subroutine sub_401140 at 401140 has 6 blocks
+  BB: 401140 in func 401140 with 2 insts
+    Referenced by data
+    I: 401140
+    I: 401144 (flow 4010d0)
+      Successors: 4010d0
+  BB: 401100 in func 401140 with 1 insts
+    I: 401100
+      No successors
+  BB: 401146 in func 401140 with 1 insts
+    I: 401146
+      No successors
+  BB: 4010ef in func 401140 with 3 insts
+    I: 4010ef
+    I: 4010f4
+    I: 4010f7 (flow 401100)
+      Successors: 401100, 4010f9
+  BB: 4010d0 in func 401140 with 8 insts
+    I: 4010d0 (imm 4040f0)
+    I: 4010d5 (imm 4040f0)
+    I: 4010dc
+    I: 4010df
+    I: 4010e3
+    I: 4010e7
+    I: 4010ea
+    I: 4010ed (flow 401100)
+      Successors: 401100, 4010ef
+  WARNING: No table entries for indirect jump at 4010fe; Adding next_ea 401100 as successor.
+  BB: 4010f9 in func 401140 with 2 insts
+    I: 4010f9 (imm 4040f0)
+    I: 4010fe
+      Successors: 401100
+Recovering 401150
+  Analysing subroutine sub_401150 at 401150
+  Subroutine sub_401150 at 401150 has 13 blocks
+  BB: 401223 in func 401150 with 2 insts
+    I: 401223
+    I: 40122d
+      No successors
+  BB: 401184 in func 401150 with 3 insts
+    I: 401184
+    I: 401187
+    I: 40118c (flow 4011af)
+      Successors: 401192, 4011af
+  BB: 4011a5 in func 401150 with 1 insts
+    I: 4011a5 (flow 4011aa)
+      Successors: 4011aa
+  BB: 4011aa in func 401150 with 1 insts
+    I: 4011aa (flow 40121e)
+      Successors: 40121e
+  BB: 40116e in func 401150 with 4 insts
+    I: 40116e
+    I: 401171
+    I: 401174
+    I: 401179 (flow 401215)
+      Successors: 401215, 40117f
+  BB: 4011af in func 401150 with 19 insts
+    I: 4011af
+    I: 4011b3
+    I: 4011b6
+    I: 4011b9
+    I: 4011be
+    I: 4011c1
+    I: 4011c6
+    I: 4011cc
+    I: 4011ce
+    I: 4011d4
+    I: 4011d7
+    I: 4011d9
+    I: 4011de
+    I: 4011e0
+    I: 4011e5
+    I: 4011e8 (flow 417a40)
+    I: 4011ed
+    I: 4011f0
+    I: 4011f7 (flow 40121e)
+      Successors: 40121e
+  BB: 401150 in func 401150 with 7 insts
+    I: 401150
+    I: 401151
+    I: 401154
+    I: 401158
+    I: 40115f (flow 417a40)
+    I: 401164
+    I: 401167
+      Successors: 40116e
+  BB: 401192 in func 401150 with 1 insts
+    I: 401192 (flow 401197)
+      Successors: 401197
+  BB: 401215 in func 401150 with 4 insts
+    I: 401215
+    I: 401218
+    I: 40121c
+    I: 40121d
+      No successors
+  BB: 401197 in func 401150 with 3 insts
+    I: 401197
+    I: 40119a
+    I: 40119f (flow 4011fc)
+      Successors: 4011fc, 4011a5
+  BB: 4011fc in func 401150 with 6 insts
+    I: 4011fc
+    I: 401201
+    I: 401206
+    I: 40120a
+    I: 40120d
+    I: 401210 (flow 40121e)
+      Successors: 40121e
+  BB: 40121e in func 401150 with 1 insts
+    I: 40121e (flow 40116e)
+      Successors: 40116e
+  BB: 40117f in func 401150 with 1 insts
+    I: 40117f (flow 401184)
+      Successors: 401184
+Recovering 401230
+  Analysing subroutine sub_401230 at 401230
+  Subroutine sub_401230 at 401230 has 34 blocks
+  BB: 401301 in func 401230 with 3 insts
+    I: 401301
+    I: 401304
+    I: 401309 (flow 401319)
+      Successors: 401319, 40130f
+  BB: 4012fc in func 401230 with 1 insts
+    I: 4012fc (flow 401301)
+      Successors: 401301
+  BB: 40128a in func 401230 with 1 insts
+    I: 40128a (flow 40128f)
+      Successors: 40128f
+  BB: 40138e in func 401230 with 24 insts
+    I: 40138e
+    I: 401391
+    I: 401396
+    I: 401397
+    I: 401399
+    I: 40139b
+    I: 4013a0
+    I: 4013a3
+    I: 4013a8
+    I: 4013aa (mem 404100)
+    I: 4013b1
+    I: 4013b3
+    I: 4013b9
+    I: 4013bc
+    I: 4013c2 (mem 404100)
+    I: 4013c9
+    I: 4013cb (disp 404110)
+    I: 4013d2
+    I: 4013d5
+    I: 4013da
+    I: 4013db
+    I: 4013dd
+    I: 4013e0
+    I: 4013e7 (flow 40145e)
+      Successors: 40145e
+  BB: 40128f in func 401230 with 3 insts
+    I: 40128f
+    I: 401292
+    I: 401297 (flow 40140e)
+      Successors: 40129d, 40140e
+  BB: 40130f in func 401230 with 1 insts
+    I: 40130f (flow 401314)
+      Successors: 401314
+  BB: 40140e in func 401230 with 12 insts
+    I: 40140e
+    I: 401411
+    I: 401413
+    I: 401418
+    I: 40141b
+    I: 401420
+    I: 401423
+    I: 401428
+    I: 40142d
+    I: 401430
+    I: 401433
+    I: 401436 (flow 40145e)
+      Successors: 40145e
+  BB: 401314 in func 401230 with 1 insts
+    I: 401314 (flow 40145e)
+      Successors: 40145e
+  BB: 401319 in func 401230 with 7 insts
+    I: 401319
+    I: 40131c
+    I: 401321
+    I: 401326
+    I: 401329
+    I: 40132c
+    I: 40132f (flow 40145e)
+      Successors: 40145e
+  BB: 40129d in func 401230 with 1 insts
+    I: 40129d (flow 4012a2)
+      Successors: 4012a2
+  BB: 4012a2 in func 401230 with 3 insts
+    I: 4012a2
+    I: 4012a5
+    I: 4012aa (flow 401458)
+      Successors: 4012b0, 401458
+  BB: 401230 in func 401230 with 8 insts
+    I: 401230
+    I: 401231
+    I: 401234
+    I: 401238
+    I: 40123b (mem 404100)
+    I: 401246
+    I: 401249
+    I: 40124c
+      Successors: 401253
+  BB: 4012b0 in func 401230 with 1 insts
+    I: 4012b0 (flow 4012b5)
+      Successors: 4012b5
+  BB: 401334 in func 401230 with 10 insts
+    I: 401334 (mem 404100)
+    I: 40133b
+    I: 40133d
+    I: 401343
+    I: 401346
+    I: 40134c (mem 404100)
+    I: 401353
+    I: 401355 (disp 404110)
+    I: 40135d
+    I: 401364 (flow 40145e)
+      Successors: 40145e
+  BB: 4012b5 in func 401230 with 3 insts
+    I: 4012b5
+    I: 4012b8
+    I: 4012bd (flow 40143b)
+      Successors: 40143b, 4012c3
+  BB: 40143b in func 401230 with 5 insts
+    I: 40143b
+    I: 40143f (disp 404110)
+    I: 401447 (flow 417a28)
+    I: 40144c
+    I: 401453 (flow 40145e)
+      Successors: 40145e
+  BB: 4012c3 in func 401230 with 1 insts
+    I: 4012c3 (flow 4012c8)
+      Successors: 4012c8
+  BB: 4012c8 in func 401230 with 3 insts
+    I: 4012c8
+    I: 4012cb
+    I: 4012d0 (flow 401334)
+      Successors: 401334, 4012d6
+  BB: 401253 in func 401230 with 4 insts
+    I: 401253
+    I: 401256
+    I: 401259
+    I: 40125e (flow 40138e)
+      Successors: 401264, 40138e
+  BB: 4012d6 in func 401230 with 1 insts
+    I: 4012d6 (flow 4012db)
+      Successors: 4012db
+  BB: 401458 in func 401230 with 3 insts
+    I: 401458
+    I: 40145c
+    I: 40145d
+      No successors
+  BB: 4012db in func 401230 with 3 insts
+    I: 4012db
+    I: 4012de
+    I: 4012e3 (flow 401375)
+      Successors: 4012e9, 401375
+  BB: 40145e in func 401230 with 1 insts
+    I: 40145e (flow 401253)
+      Successors: 401253
+  BB: 401463 in func 401230 with 2 insts
+    I: 401463
+    I: 40146d
+      No successors
+  BB: 401264 in func 401230 with 1 insts
+    I: 401264 (flow 401269)
+      Successors: 401269
+  BB: 401269 in func 401230 with 3 insts
+    I: 401269
+    I: 40126c
+    I: 401271 (flow 4013f8)
+      Successors: 4013f8, 401277
+  BB: 4012e9 in func 401230 with 1 insts
+    I: 4012e9 (flow 4012ee)
+      Successors: 4012ee
+  BB: 401369 in func 401230 with 2 insts
+    I: 401369
+    I: 401370 (flow 40145e)
+      Successors: 40145e
+  BB: 4013ec in func 401230 with 2 insts
+    I: 4013ec
+    I: 4013f3 (flow 40145e)
+      Successors: 40145e
+  BB: 4012ee in func 401230 with 3 insts
+    I: 4012ee
+    I: 4012f1
+    I: 4012f6 (flow 4013ec)
+      Successors: 4013ec, 4012fc
+  BB: 401375 in func 401230 with 6 insts
+    I: 401375
+    I: 40137a
+    I: 40137f
+    I: 401383
+    I: 401386
+    I: 401389 (flow 40145e)
+      Successors: 40145e
+  BB: 401277 in func 401230 with 1 insts
+    I: 401277 (flow 40127c)
+      Successors: 40127c
+  BB: 4013f8 in func 401230 with 4 insts
+    I: 4013f8 (mem 404100)
+    I: 4013ff
+    I: 401402
+    I: 401409 (flow 40145e)
+      Successors: 40145e
+  BB: 40127c in func 401230 with 3 insts
+    I: 40127c
+    I: 40127f
+    I: 401284 (flow 401369)
+      Successors: 401369, 40128a
+Recovering 401470
+  Analysing subroutine sub_401470 at 401470
+  Subroutine sub_401470 at 401470 has 40 blocks
+  BB: 401482 in func 401470 with 4 insts
+    I: 401482
+    I: 401485
+    I: 401488
+    I: 40148d (flow 401604)
+      Successors: 401493, 401604
+  BB: 401604 in func 401470 with 2 insts
+    I: 401604
+    I: 40160b (flow 4016cd)
+      Successors: 4016cd
+  BB: 401505 in func 401470 with 1 insts
+    I: 401505 (flow 40150a)
+      Successors: 40150a
+  BB: 401587 in func 401470 with 8 insts
+    I: 401587
+    I: 40158b (disp 404030)
+    I: 401592
+    I: 401595
+    I: 401599 (disp 404090)
+    I: 4015a0
+    I: 4015a3
+    I: 4015aa (flow 4016cd)
+      Successors: 4016cd
+  BB: 40150a in func 401470 with 3 insts
+    I: 40150a
+    I: 40150d
+    I: 401512 (flow 4015af)
+      Successors: 401518, 4015af
+  BB: 401610 in func 401470 with 7 insts
+    I: 401610
+    I: 401613
+    I: 401615
+    I: 401618
+    I: 40161a
+    I: 40161d
+    I: 401624 (flow 4016cd)
+      Successors: 4016cd
+  BB: 401493 in func 401470 with 1 insts
+    I: 401493 (flow 401498)
+      Successors: 401498
+  BB: 401518 in func 401470 with 1 insts
+    I: 401518 (flow 40151d)
+      Successors: 40151d
+  BB: 401498 in func 401470 with 3 insts
+    I: 401498
+    I: 40149b
+    I: 4014a0 (flow 40156e)
+      Successors: 40156e, 4014a6
+  BB: 40151d in func 401470 with 3 insts
+    I: 40151d
+    I: 401520
+    I: 401525 (flow 40164e)
+      Successors: 40152b, 40164e
+  BB: 4016a5 in func 401470 with 12 insts
+    I: 4016a5
+    I: 4016a8
+    I: 4016aa
+    I: 4016ad
+    I: 4016af
+    I: 4016b2
+    I: 4016b5
+    I: 4016b7
+    I: 4016ba
+    I: 4016bc
+    I: 4016bf
+    I: 4016c6 (flow 4016cd)
+      Successors: 4016cd
+  BB: 4014a6 in func 401470 with 1 insts
+    I: 4014a6 (flow 4014ab)
+      Successors: 4014ab
+  BB: 401629 in func 401470 with 5 insts
+    I: 401629 (mem 406854)
+    I: 401634
+    I: 40163b
+    I: 401642
+    I: 401649 (flow 4016cd)
+      Successors: 4016cd
+  BB: 4014ab in func 401470 with 3 insts
+    I: 4014ab
+    I: 4014ae
+    I: 4014b3 (flow 4015cb)
+      Successors: 4014b9, 4015cb
+  BB: 40152b in func 401470 with 1 insts
+    I: 40152b (flow 401530)
+      Successors: 401530
+  BB: 4015af in func 401470 with 6 insts
+    I: 4015af
+    I: 4015b4
+    I: 4015b9
+    I: 4015c0
+    I: 4015c3
+    I: 4015c6 (flow 4016cd)
+      Successors: 4016cd
+  BB: 401530 in func 401470 with 3 insts
+    I: 401530
+    I: 401533
+    I: 401538 (flow 401629)
+      Successors: 401629, 40153e
+  BB: 4014b9 in func 401470 with 1 insts
+    I: 4014b9 (flow 4014be)
+      Successors: 4014be
+  BB: 4014be in func 401470 with 3 insts
+    I: 4014be
+    I: 4014c1
+    I: 4014c6 (flow 4016cb)
+      Successors: 4016cb, 4014cc
+  BB: 40153e in func 401470 with 1 insts
+    I: 40153e (flow 401543)
+      Successors: 401543
+  BB: 401543 in func 401470 with 3 insts
+    I: 401543
+    I: 401546
+    I: 40154b (flow 4015e3)
+      Successors: 401551, 4015e3
+  BB: 4015cb in func 401470 with 4 insts
+    I: 4015cb
+    I: 4015cf (disp 404130)
+    I: 4015d7
+    I: 4015de (flow 4016cd)
+      Successors: 4016cd
+  BB: 4014cc in func 401470 with 1 insts
+    I: 4014cc (flow 4014d1)
+      Successors: 4014d1
+  BB: 4016cb in func 401470 with 2 insts
+    I: 4016cb
+    I: 4016cc
+      No successors
+  BB: 40164e in func 401470 with 6 insts
+    I: 40164e
+    I: 401653
+    I: 401658
+    I: 40165f
+    I: 401662
+    I: 401665 (flow 4016cd)
+      Successors: 4016cd
+  BB: 4016cd in func 401470 with 1 insts
+    I: 4016cd (flow 401482)
+      Successors: 401482
+  BB: 4014d1 in func 401470 with 3 insts
+    I: 4014d1
+    I: 4014d4
+    I: 4014d9 (flow 4016a5)
+      Successors: 4016a5, 4014df
+  BB: 401551 in func 401470 with 1 insts
+    I: 401551 (flow 401556)
+      Successors: 401556
+  BB: 4016d2 in func 401470 with 2 insts
+    I: 4016d2
+    I: 4016dc
+      No successors
+  BB: 401556 in func 401470 with 3 insts
+    I: 401556
+    I: 401559
+    I: 40155e (flow 401610)
+      Successors: 401610, 401564
+  BB: 4014df in func 401470 with 1 insts
+    I: 4014df (flow 4014e4)
+      Successors: 4014e4
+  BB: 4015e3 in func 401470 with 8 insts
+    I: 4015e3
+    I: 4015e6
+    I: 4015e9
+    I: 4015ee
+    I: 4015f0
+    I: 4015f5
+    I: 4015f8
+    I: 4015ff (flow 4016cd)
+      Successors: 4016cd
+  BB: 4014e4 in func 401470 with 3 insts
+    I: 4014e4
+    I: 4014e7
+    I: 4014ec (flow 40166a)
+      Successors: 4014f2, 40166a
+  BB: 401564 in func 401470 with 1 insts
+    I: 401564 (flow 401569)
+      Successors: 401569
+  BB: 401569 in func 401470 with 1 insts
+    I: 401569 (flow 4016cd)
+      Successors: 4016cd
+  BB: 40166a in func 401470 with 18 insts
+    I: 40166a
+    I: 40166d
+    I: 40166f
+    I: 401672
+    I: 401674
+    I: 401676 (disp 406850)
+    I: 40167d
+    I: 401680
+    I: 401682
+    I: 401684
+    I: 401686
+    I: 401688
+    I: 40168a
+    I: 40168c
+    I: 40168e
+    I: 401692 (disp 406850)
+    I: 401699
+    I: 4016a0 (flow 4016cd)
+      Successors: 4016cd
+  BB: 40156e in func 401470 with 6 insts
+    I: 40156e
+    I: 401573
+    I: 401578
+    I: 40157c
+    I: 40157f
+    I: 401582 (flow 4016cd)
+      Successors: 4016cd
+  BB: 401470 in func 401470 with 4 insts
+    I: 401470
+    I: 401471
+    I: 401474
+    I: 40147b
+      Successors: 401482
+  BB: 4014f2 in func 401470 with 1 insts
+    I: 4014f2 (flow 4014f7)
+      Successors: 4014f7
+  BB: 4014f7 in func 401470 with 3 insts
+    I: 4014f7
+    I: 4014fa
+    I: 4014ff (flow 401587)
+      Successors: 401505, 401587
+Recovering main at 4016e0
+  Analysing subroutine main at 4016e0
+    Block head at 00401e05 is not code.
+  Subroutine main at 4016e0 has 111 blocks
+  BB: 401e00 in func 4016e0 with 1 insts
+    I: 401e00 (flow 4016fb)
+      Successors: 4016fb
+  BB: 401803 in func 4016e0 with 1 insts
+    I: 401803 (flow 401808)
+      Successors: 401808
+  BB: 401c07 in func 4016e0 with 7 insts
+    I: 401c07
+    I: 401c0a
+    I: 401c0f
+    I: 401c14
+    I: 401c17
+    I: 401c1a
+    I: 401c1d (flow 401e00)
+      Successors: 401e00
+  BB: 401808 in func 4016e0 with 3 insts
+    I: 401808
+    I: 40180b
+    I: 401810 (flow 401cf7)
+      Successors: 401816, 401cf7
+  BB: 401816 in func 4016e0 with 1 insts
+    I: 401816 (flow 40181b)
+      Successors: 40181b
+  BB: 40181b in func 4016e0 with 3 insts
+    I: 40181b
+    I: 40181e
+    I: 401823 (flow 401a51)
+      Successors: 401a51, 401829
+  BB: 401c22 in func 4016e0 with 3 insts
+    I: 401c22
+    I: 401c29
+    I: 401c30 (flow 401e00)
+      Successors: 401e00
+  BB: 401a24 in func 4016e0 with 9 insts
+    I: 401a24
+    I: 401a27
+    I: 401a2d
+    I: 401a30
+    I: 401a36 (flow 401230)
+    I: 401a3b
+    I: 401a40 (flow 417a28)
+    I: 401a45
+    I: 401a4c (flow 401e00)
+      Successors: 401e00
+  BB: 401829 in func 4016e0 with 1 insts
+    I: 401829 (flow 40182e)
+      Successors: 40182e
+  BB: 40182e in func 4016e0 with 3 insts
+    I: 40182e
+    I: 401831
+    I: 401836 (flow 401a7e)
+      Successors: 40183c, 401a7e
+  BB: 401c35 in func 4016e0 with 7 insts
+    I: 401c35
+    I: 401c38
+    I: 401c3d
+    I: 401c42
+    I: 401c45
+    I: 401c48
+    I: 401c4b (flow 401e00)
+      Successors: 401e00
+  BB: 40183c in func 4016e0 with 1 insts
+    I: 40183c (flow 401841)
+      Successors: 401841
+  BB: 401841 in func 4016e0 with 3 insts
+    I: 401841
+    I: 401844
+    I: 401849 (flow 401abb)
+      Successors: 401abb, 40184f
+  BB: 40184f in func 4016e0 with 1 insts
+    I: 40184f (flow 401854)
+      Successors: 401854
+  BB: 401c50 in func 4016e0 with 14 insts
+    I: 401c50
+    I: 401c54 (disp 412bf0)
+    I: 401c5b
+    I: 401c5f (disp 412bf0)
+    I: 401c66
+    I: 401c68
+    I: 401c6a
+    I: 401c6c
+    I: 401c6f
+    I: 401c74
+    I: 401c79
+    I: 401c7c
+    I: 401c7f
+    I: 401c82 (flow 401e00)
+      Successors: 401e00
+  BB: 401a51 in func 4016e0 with 15 insts
+    I: 401a51
+    I: 401a54
+    I: 401a56
+    I: 401a58
+    I: 401a5a
+    I: 401a5d
+    I: 401a5f
+    I: 401a61
+    I: 401a63
+    I: 401a66
+    I: 401a6b
+    I: 401a70
+    I: 401a73
+    I: 401a76
+    I: 401a79 (flow 401e00)
+      Successors: 401e00
+  BB: 401854 in func 4016e0 with 3 insts
+    I: 401854
+    I: 401857
+    I: 40185c (flow 401cd6)
+      Successors: 401862, 401cd6
+  BB: 401862 in func 4016e0 with 1 insts
+    I: 401862 (flow 401867)
+      Successors: 401867
+  BB: 401867 in func 4016e0 with 3 insts
+    I: 401867
+    I: 40186a
+    I: 40186f (flow 401dd3)
+      Successors: 401dd3, 401875
+  BB: 401875 in func 4016e0 with 1 insts
+    I: 401875 (flow 40187a)
+      Successors: 40187a
+  BB: 40187a in func 4016e0 with 3 insts
+    I: 40187a
+    I: 40187d
+    I: 401882 (flow 401daa)
+      Successors: 401888, 401daa
+  BB: 401a7e in func 4016e0 with 4 insts
+    I: 401a7e (mem 404100)
+    I: 401a85
+    I: 401a88
+    I: 401a8f (flow 401e00)
+      Successors: 401e00
+  BB: 401c87 in func 4016e0 with 6 insts
+    I: 401c87
+    I: 401c8c
+    I: 401c91
+    I: 401c95
+    I: 401c98
+    I: 401c9b (flow 401e00)
+      Successors: 401e00
+  BB: 401888 in func 4016e0 with 1 insts
+    I: 401888 (flow 40188d)
+      Successors: 40188d
+  BB: 40188d in func 4016e0 with 3 insts
+    I: 40188d
+    I: 401890
+    I: 401895 (flow 401ad8)
+      Successors: 401ad8, 40189b
+  BB: 401a94 in func 4016e0 with 12 insts
+    I: 401a94
+    I: 401a97
+    I: 401a99
+    I: 401a9c
+    I: 401a9e
+    I: 401aa0
+    I: 401aa3
+    I: 401aa8
+    I: 401aad
+    I: 401ab0
+    I: 401ab3
+    I: 401ab6 (flow 401e00)
+      Successors: 401e00
+  BB: 40189b in func 4016e0 with 1 insts
+    I: 40189b (flow 4018a0)
+      Successors: 4018a0
+  BB: 4018a0 in func 4016e0 with 3 insts
+    I: 4018a0
+    I: 4018a3
+    I: 4018a8 (flow 4019af)
+      Successors: 4018ae, 4019af
+  BB: 401ca0 in func 4016e0 with 8 insts
+    I: 401ca0
+    I: 401ca3
+    I: 401ca6
+    I: 401ca8
+    I: 401caa
+    I: 401cac
+    I: 401caf
+    I: 401cb6 (flow 401e00)
+      Successors: 401e00
+  BB: 4018ae in func 4016e0 with 1 insts
+    I: 4018ae (flow 4018b3)
+      Successors: 4018b3
+  BB: 4018b3 in func 4016e0 with 3 insts
+    I: 4018b3
+    I: 4018b6
+    I: 4018bb (flow 401b8e)
+      Successors: 4018c1, 401b8e
+  BB: 401abb in func 4016e0 with 5 insts
+    I: 401abb
+    I: 401abf (disp 404110)
+    I: 401ac7 (flow 417a28)
+    I: 401acc
+    I: 401ad3 (flow 401e00)
+      Successors: 401e00
+  BB: 401cbb in func 4016e0 with 7 insts
+    I: 401cbb
+    I: 401cbe
+    I: 401cc3
+    I: 401cc8
+    I: 401ccb
+    I: 401cce
+    I: 401cd1 (flow 401e00)
+      Successors: 401e00
+  BB: 4018c1 in func 4016e0 with 1 insts
+    I: 4018c1 (flow 4018c6)
+      Successors: 4018c6
+  BB: 4018c6 in func 4016e0 with 3 insts
+    I: 4018c6
+    I: 4018c9
+    I: 4018ce (flow 4019d1)
+      Successors: 4019d1, 4018d4
+  BB: 4018d4 in func 4016e0 with 1 insts
+    I: 4018d4 (flow 4018d9)
+      Successors: 4018d9
+  BB: 401cd6 in func 4016e0 with 8 insts
+    I: 401cd6
+    I: 401cd9
+    I: 401cdc
+    I: 401ce1
+    I: 401ce3
+    I: 401ce8
+    I: 401ceb
+    I: 401cf2 (flow 401e00)
+      Successors: 401e00
+  BB: 401ad8 in func 4016e0 with 4 insts
+    I: 401ad8
+    I: 401add (flow 417a28)
+    I: 401ae2
+    I: 401ae9 (flow 401e00)
+      Successors: 401e00
+  BB: 4018d9 in func 4016e0 with 3 insts
+    I: 4018d9
+    I: 4018dc
+    I: 4018e1 (flow 401c35)
+      Successors: 401c35, 4018e7
+  BB: 4016e0 in func 4016e0 with 6 insts
+    Referenced by data
+    I: 4016e0
+    I: 4016e1
+    I: 4016e4
+    I: 4016e8
+    I: 4016ef (flow 401470)
+    I: 4016f4
+      Successors: 4016fb
+  BB: 4018e7 in func 4016e0 with 1 insts
+    I: 4018e7 (flow 4018ec)
+      Successors: 4018ec
+  BB: 4018ec in func 4016e0 with 3 insts
+    I: 4018ec
+    I: 4018ef
+    I: 4018f4 (flow 401dec)
+      Successors: 4018fa, 401dec
+  BB: 401aee in func 4016e0 with 2 insts
+    I: 401aee
+    I: 401af5 (flow 401e00)
+      Successors: 401e00
+  BB: 401cf7 in func 4016e0 with 12 insts
+    I: 401cf7
+    I: 401cfb (disp 40b690)
+    I: 401d02
+    I: 401d04
+    I: 401d06
+    I: 401d08
+    I: 401d0b
+    I: 401d0d
+    I: 401d0f
+    I: 401d11 (disp 40b690)
+    I: 401d18
+    I: 401d1f (flow 401e00)
+      Successors: 401e00
+  BB: 4018fa in func 4016e0 with 1 insts
+    I: 4018fa (flow 4018ff)
+      Successors: 4018ff
+  BB: 401afa in func 4016e0 with 12 insts
+    I: 401afa (imm 40b690)
+    I: 401b04
+    I: 401b06
+    I: 401b0b (flow 417a38)
+    I: 401b10 (imm 4104d0)
+    I: 401b1a
+    I: 401b1c
+    I: 401b21 (flow 417a38)
+    I: 401b26
+    I: 401b2d
+    I: 401b34
+    I: 401b3b (flow 401e00)
+      Successors: 401e00
+  BB: 4016fb in func 4016e0 with 4 insts
+    I: 4016fb
+    I: 4016fe
+    I: 401701
+    I: 401706 (flow 401d51)
+      Successors: 401d51, 40170c
+  BB: 4018ff in func 4016e0 with 3 insts
+    I: 4018ff
+    I: 401902
+    I: 401907 (flow 401d5d)
+      Successors: 401d5d, 40190d
+  BB: 40170c in func 4016e0 with 1 insts
+    I: 40170c (flow 401711)
+      Successors: 401711
+  BB: 40190d in func 4016e0 with 1 insts
+    I: 40190d (flow 401912)
+      Successors: 401912
+  BB: 401711 in func 4016e0 with 3 insts
+    I: 401711
+    I: 401714
+    I: 401719 (flow 401d30)
+      Successors: 401d30, 40171f
+  BB: 401912 in func 4016e0 with 3 insts
+    I: 401912
+    I: 401915
+    I: 40191a (flow 401a24)
+      Successors: 401920, 401a24
+  BB: 40171f in func 4016e0 with 1 insts
+    I: 40171f (flow 401724)
+      Successors: 401724
+  BB: 401920 in func 4016e0 with 1 insts
+    I: 401920 (flow 401925)
+      Successors: 401925
+  BB: 401724 in func 4016e0 with 3 insts
+    I: 401724
+    I: 401727
+    I: 40172c (flow 401afa)
+      Successors: 401afa, 401732
+  BB: 401925 in func 4016e0 with 3 insts
+    I: 401925
+    I: 401928
+    I: 40192d (flow 401b5b)
+      Successors: 401b5b, 401933
+  BB: 401d24 in func 4016e0 with 2 insts
+    I: 401d24
+    I: 401d2b (flow 401e00)
+      Successors: 401e00
+  BB: 401d30 in func 4016e0 with 11 insts
+    I: 401d30
+    I: 401d33
+    I: 401d35
+    I: 401d37
+    I: 401d39
+    I: 401d3c
+    I: 401d3e
+    I: 401d40
+    I: 401d42
+    I: 401d45
+    I: 401d4c (flow 401e00)
+      Successors: 401e00
+  BB: 401732 in func 4016e0 with 1 insts
+    I: 401732 (flow 401737)
+      Successors: 401737
+  BB: 401933 in func 4016e0 with 1 insts
+    I: 401933 (flow 401938)
+      Successors: 401938
+  BB: 401737 in func 4016e0 with 3 insts
+    I: 401737
+    I: 40173a
+    I: 40173f (flow 401df8)
+      Successors: 401df8, 401745
+  BB: 401938 in func 4016e0 with 3 insts
+    I: 401938
+    I: 40193b
+    I: 401940 (flow 401d7c)
+      Successors: 401d7c, 401946
+  BB: 401b40 in func 4016e0 with 7 insts
+    I: 401b40
+    I: 401b43
+    I: 401b48
+    I: 401b4d
+    I: 401b50
+    I: 401b53
+    I: 401b56 (flow 401e00)
+      Successors: 401e00
+  BB: 401745 in func 4016e0 with 1 insts
+    I: 401745 (flow 40174a)
+      Successors: 40174a
+  BB: 401946 in func 4016e0 with 1 insts
+    I: 401946 (flow 40194b)
+      Successors: 40194b
+  BB: 40174a in func 4016e0 with 3 insts
+    I: 40174a
+    I: 40174d
+    I: 401752 (flow 401aee)
+      Successors: 401758, 401aee
+  BB: 40194b in func 4016e0 with 3 insts
+    I: 40194b
+    I: 40194e
+    I: 401953 (flow 401d8f)
+      Successors: 401959, 401d8f
+  BB: 401d51 in func 4016e0 with 2 insts
+    I: 401d51
+    I: 401d58 (flow 401e00)
+      Successors: 401e00
+  BB: 401758 in func 4016e0 with 1 insts
+    I: 401758 (flow 40175d)
+      Successors: 40175d
+  BB: 401959 in func 4016e0 with 1 insts
+    I: 401959 (flow 40195e)
+      Successors: 40195e
+  BB: 401b5b in func 4016e0 with 12 insts
+    I: 401b5b
+    I: 401b5f (disp 406850)
+    I: 401b66
+    I: 401b67
+    I: 401b6a
+    I: 401b6d
+    I: 401b71
+    I: 401b76
+    I: 401b7b (disp 4104d0)
+    I: 401b83
+    I: 401b86
+    I: 401b89 (flow 401e00)
+      Successors: 401e00
+  BB: 40175d in func 4016e0 with 3 insts
+    I: 40175d
+    I: 401760
+    I: 401765 (flow 401c22)
+      Successors: 401c22, 40176b
+  BB: 40195e in func 4016e0 with 3 insts
+    I: 40195e
+    I: 401961
+    I: 401966 (flow 401d24)
+      Successors: 40196c, 401d24
+  BB: 401d5d in func 4016e0 with 7 insts
+    I: 401d5d
+    I: 401d60
+    I: 401d65
+    I: 401d68
+    I: 401d6d
+    I: 401d70
+    I: 401d77 (flow 401e00)
+      Successors: 401e00
+  BB: 40176b in func 4016e0 with 1 insts
+    I: 40176b (flow 401770)
+      Successors: 401770
+  BB: 40196c in func 4016e0 with 1 insts
+    I: 40196c (flow 401971)
+      Successors: 401971
+  BB: 401770 in func 4016e0 with 3 insts
+    I: 401770
+    I: 401773
+    I: 401778 (flow 4019fb)
+      Successors: 4019fb, 40177e
+  BB: 401971 in func 4016e0 with 3 insts
+    I: 401971
+    I: 401974
+    I: 401979 (flow 401c87)
+      Successors: 401c87, 40197f
+  BB: 401d7c in func 4016e0 with 3 insts
+    I: 401d7c
+    I: 401d83
+    I: 401d8a (flow 401e00)
+      Successors: 401e00
+  BB: 40177e in func 4016e0 with 1 insts
+    I: 40177e (flow 401783)
+      Successors: 401783
+  BB: 40197f in func 4016e0 with 1 insts
+    I: 40197f (flow 401984)
+      Successors: 401984
+  BB: 401783 in func 4016e0 with 3 insts
+    I: 401783
+    I: 401786
+    I: 40178b (flow 401bc7)
+      Successors: 401791, 401bc7
+  BB: 401984 in func 4016e0 with 3 insts
+    I: 401984
+    I: 401987
+    I: 40198c (flow 401c07)
+      Successors: 401992, 401c07
+  BB: 401b8e in func 4016e0 with 16 insts
+    I: 401b8e
+    I: 401b92 (disp 4104d0)
+    I: 401b9a
+    I: 401b9d
+    I: 401ba0
+    I: 401ba2
+    I: 401ba4
+    I: 401ba6
+    I: 401ba9
+    I: 401bab
+    I: 401bad
+    I: 401baf
+    I: 401bb2
+    I: 401bb4 (disp 412bf0)
+    I: 401bbb
+    I: 401bc2 (flow 401e00)
+      Successors: 401e00
+  BB: 401d8f in func 4016e0 with 7 insts
+    I: 401d8f
+    I: 401d92
+    I: 401d97
+    I: 401d9c
+    I: 401d9f
+    I: 401da2
+    I: 401da5 (flow 401e00)
+      Successors: 401e00
+  BB: 401791 in func 4016e0 with 1 insts
+    I: 401791 (flow 401796)
+      Successors: 401796
+  BB: 401992 in func 4016e0 with 1 insts
+    I: 401992 (flow 401997)
+      Successors: 401997
+  BB: 401796 in func 4016e0 with 3 insts
+    I: 401796
+    I: 401799
+    I: 40179e (flow 401c50)
+      Successors: 401c50, 4017a4
+  BB: 401997 in func 4016e0 with 3 insts
+    I: 401997
+    I: 40199a
+    I: 40199f (flow 401bd3)
+      Successors: 401bd3, 4019a5
+  BB: 4017a4 in func 4016e0 with 1 insts
+    I: 4017a4 (flow 4017a9)
+      Successors: 4017a9
+  BB: 4019a5 in func 4016e0 with 1 insts
+    I: 4019a5 (flow 4019aa)
+      Successors: 4019aa
+  BB: 4017a9 in func 4016e0 with 3 insts
+    I: 4017a9
+    I: 4017ac
+    I: 4017b1 (flow 401a94)
+      Successors: 401a94, 4017b7
+  BB: 4019aa in func 4016e0 with 1 insts
+    I: 4019aa (flow 401e00)
+      Successors: 401e00
+  BB: 401daa in func 4016e0 with 8 insts
+    I: 401daa
+    I: 401dae (disp 40b690)
+    I: 401db5
+    I: 401db8 (flow 401230)
+    I: 401dbd
+    I: 401dc2 (flow 417a28)
+    I: 401dc7
+    I: 401dce (flow 401e00)
+      Successors: 401e00
+  BB: 4019af in func 4016e0 with 9 insts
+    I: 4019af (flow 401150)
+    I: 4019b4
+    I: 4019b6
+    I: 4019b9
+    I: 4019be
+    I: 4019c3
+    I: 4019c6
+    I: 4019c9
+    I: 4019cc (flow 401e00)
+      Successors: 401e00
+  BB: 4017b7 in func 4016e0 with 1 insts
+    I: 4017b7 (flow 4017bc)
+      Successors: 4017bc
+  BB: 4017bc in func 4016e0 with 3 insts
+    I: 4017bc
+    I: 4017bf
+    I: 4017c4 (flow 401cbb)
+      Successors: 4017ca, 401cbb
+  BB: 401bc7 in func 4016e0 with 2 insts
+    I: 401bc7
+    I: 401bce (flow 401e00)
+      Successors: 401e00
+  BB: 4017ca in func 4016e0 with 1 insts
+    I: 4017ca (flow 4017cf)
+      Successors: 4017cf
+  BB: 4017cf in func 4016e0 with 3 insts
+    I: 4017cf
+    I: 4017d2
+    I: 4017d7 (flow 401b40)
+      Successors: 401b40, 4017dd
+  BB: 4019d1 in func 4016e0 with 10 insts
+    I: 4019d1
+    I: 4019d4
+    I: 4019d7
+    I: 4019da
+    I: 4019de
+    I: 4019e3
+    I: 4019e8 (disp 404130)
+    I: 4019f0
+    I: 4019f3
+    I: 4019f6 (flow 401e00)
+      Successors: 401e00
+  BB: 401bd3 in func 4016e0 with 11 insts
+    I: 401bd3
+    I: 401bd6
+    I: 401bd8
+    I: 401bda
+    I: 401bdc
+    I: 401bdf
+    I: 401be1
+    I: 401be3
+    I: 401be5
+    I: 401be8
+    I: 401bef (flow 401e00)
+      Successors: 401e00
+  BB: 401dd3 in func 4016e0 with 7 insts
+    I: 401dd3
+    I: 401dd6
+    I: 401dd8
+    I: 401ddb
+    I: 401ddd
+    I: 401de0
+    I: 401de7 (flow 401e00)
+      Successors: 401e00
+  BB: 4017dd in func 4016e0 with 1 insts
+    I: 4017dd (flow 4017e2)
+      Successors: 4017e2
+  BB: 4017e2 in func 4016e0 with 3 insts
+    I: 4017e2
+    I: 4017e5
+    I: 4017ea (flow 401ca0)
+      Successors: 4017f0, 401ca0
+  BB: 401dec in func 4016e0 with 2 insts
+    I: 401dec
+    I: 401df3 (flow 401e00)
+      Successors: 401e00
+  BB: 4017f0 in func 4016e0 with 1 insts
+    I: 4017f0 (flow 4017f5)
+      Successors: 4017f5
+  BB: 401bf4 in func 4016e0 with 3 insts
+    I: 401bf4
+    I: 401bfb
+    I: 401c02 (flow 401e00)
+      Successors: 401e00
+  BB: 4017f5 in func 4016e0 with 3 insts
+    I: 4017f5
+    I: 4017f8
+    I: 4017fd (flow 401bf4)
+      Successors: 401803, 401bf4
+  BB: 401df8 in func 4016e0 with 4 insts
+    I: 401df8
+    I: 401dfa
+    I: 401dfe
+    I: 401dff
+      No successors
+  BB: 4019fb in func 4016e0 with 12 insts
+    I: 4019fb
+    I: 4019fe
+    I: 401a03
+    I: 401a06
+    I: 401a08
+    I: 401a0a
+    I: 401a0c
+    I: 401a11
+    I: 401a16
+    I: 401a19
+    I: 401a1c
+    I: 401a1f (flow 401e00)
+      Successors: 401e00
+Recovering .term_proc at 401e08
+  Analysing subroutine .term_proc at 401e08
+    Block head at 00401e15 is not code.
+  Subroutine .term_proc at 401e08 has 1 blocks
+  BB: 401e08 in func 401e08 with 4 insts
+    I: 401e08
+    I: 401e0c
+    I: 401e10
+    I: 401e14
+      No successors
+Global Variable None
+WARNING: Global constructor and destructor sections are adjacent!
+Recovering region LOAD [400000, 400500) in segment LOAD
+  8-byte reference at 400018 to 401060 (start)
+  8-byte reference at 4000f8 to 401000 (.init_proc)
+  8-byte reference at 400130 to 402000 ()
+  8-byte reference at 400168 to 403de8 ()
+  8-byte reference at 400280 to 402004 ()
+  8-byte reference at 4002f0 to 403de8 ()
+Recovering region .init [401000, 40101b) in segment .init
+Recovering region LOAD [40101b, 401020) in segment LOAD
+Recovering region .plt [401020, 401060) in segment .plt
+Recovering region .text [401060, 401e05) in segment .text
+Recovering region LOAD [401e05, 401e08) in segment LOAD
+Recovering region .fini [401e08, 401e15) in segment .fini
+Recovering region .rodata [402000, 402004) in segment .rodata
+Recovering region .eh_frame_hdr [402004, 402048) in segment .eh_frame_hdr
+Recovering region .eh_frame [402048, 402144) in segment .eh_frame
+Recovering region LOAD [402144, 402188) in segment LOAD
+Recovering region .init_array [403de8, 403df8) in segment .init_array
+  8-byte reference at 403de8 to 401140 ()
+  8-byte reference at 403df0 to 401110 ()
+Recovering region LOAD [403df8, 403fd8) in segment LOAD
+Recovering region .got [403fd8, 403fe8) in segment .got
+  8-byte reference at 403fd8 to 417a30 (__libc_start_main)
+  8-byte reference at 403fe0 to 417a48 (__gmon_start__)
+Recovering region .got.plt [403fe8, 404018) in segment .got.plt
+  8-byte reference at 404000 to 417a28 (putchar)
+  8-byte reference at 404008 to 417a38 (memset)
+  8-byte reference at 404010 to 417a40 (getchar)
+Recovering region LOAD [404018, 404020) in segment LOAD
+Recovering region .data [404020, 4040f0) in segment .data
+Recovering region .bss [4040f0, 417a28) in segment .bss
+Recovering extern function putchar at 401030
+Recovering extern function memset at 401040
+Recovering extern function getchar at 401050
+Recovering extern function putchar at 417a28
+Recovering extern function __libc_start_main at 417a30
+Recovering extern function memset at 417a38
+Recovering extern function getchar at 417a40
+Recovering extern function __gmon_start__ at 417a48
+Recovered 11 functions.
+Saving to: /home/ubuntu/capstone_project/result/pipeline_20260629_141746/s634430882_fla_instsub.cfg
+Done analysis!
