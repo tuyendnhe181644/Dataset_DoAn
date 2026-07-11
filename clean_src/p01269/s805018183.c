@@ -1,0 +1,109 @@
+// AOJ 2151: Brave Princess Revisited
+// 2017.11.11 bal4u@uu
+
+#include <stdio.h>
+#include <string.h>
+
+typedef struct { int t, n, m; } QUE;
+QUE que[20001]; int qsize;
+
+#define PARENT(i) ((i)>>1)
+#define LEFT(i)   ((i)<<1)
+#define RIGHT(i)  (((i)<<1)+1)
+
+void min_heapify(int i)
+{
+	int l, r, min;
+
+	l = LEFT(i), r = RIGHT(i);
+	if (l < qsize && que[l].t < que[i].t) min = l; else min = i;
+	if (r < qsize && que[r].t < que[min].t) min = r;
+	if (min != i) {
+		QUE t = que[i]; que[i] = que[min]; que[min] = t;
+		min_heapify(min);
+	}
+}
+
+int deq(int *n, int *m)
+{
+	if (qsize == 0) return 0;
+	*n = que[0].n, *m = que[0].m;
+	que[0] = que[--qsize];
+	min_heapify(0);
+	return 1;
+}
+
+void enq(int t, int n, int m)
+{
+	int i, min;
+
+	i = qsize++;
+	que[i].t = t, que[i].n = n, que[i].m = m;
+	while (i > 0 && que[min = PARENT(i)].t > que[i].t) {
+		QUE tt = que[i]; que[i] = que[min]; que[min] = tt;
+		i = min;
+	}
+}
+
+typedef struct { int len, to[101], d[101], e[101]; } TBL;
+TBL tbl[101];
+int node[101][101]; int size;
+
+int search(int start, int goal, int l)
+{
+	int s, m, i, k, e, p, ans;
+	TBL *tp;
+
+	qsize = 0;
+	memset(node, 0x33, sizeof(node));
+	node[start][l] = 0; enq(0, start, l);
+	ans = 0x7fffff;
+	while(deq(&s, &m)) {
+		p = node[s][m];
+		if (s == goal) {
+			if (p < ans) ans = p;
+			continue;
+		}
+
+		for (tp = tbl + s, i = 0; i < tp->len; i++) {
+			e = tp->to[i];
+
+			k = p + tp->e[i];
+			if (k < node[e][m]) node[e][m] = k, enq(node[e][m], e, m);
+
+			k = m - tp->d[i];
+			if (tp->d[i] <= m && p < node[e][k]) node[e][k] = p, enq(node[e][k], e, k);
+		}
+	}
+	return ans;
+}
+
+char buf[30], *p;
+int getint()
+{
+	int n = 0;
+	while (*p >= '0') n = (n<<3) + (n<<1) + (*p++ & 0xf);
+	return n;
+}
+
+int main()
+{
+	int n, m, l, a, b, d, e, i;
+	TBL *tp;
+
+	while (fgets(p=buf, 30, stdin) && *p != '0') {
+		n = getint(), p++, m = getint(), p++, l = getint();
+		memset(tbl, 0, sizeof(tbl));
+		while (m--) {
+			fgets(p=buf, 30, stdin);
+			a = getint()-1, p++, b = getint()-1, p++, d = getint(), p++, e = getint();
+			tp = tbl+a, i = tp->len;
+			tp->to[i] = b, tp->d[i] = d, tp->e[i] = e, tp->len++;
+			tp = tbl+b, i = tp->len;
+			tp->to[i] = a, tp->d[i] = d, tp->e[i] = e, tp->len++;
+		}
+		size = n;
+		printf("%d\n", search(0, n-1, l));
+	}
+	return 0;
+}

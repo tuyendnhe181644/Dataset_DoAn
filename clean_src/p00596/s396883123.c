@@ -1,0 +1,38 @@
+n,e[28],sep[7];
+connect(d){
+	int i,x;
+	sep[d]=0;
+	for(i=0;i<n;i++){
+		if(e[i]/10==d){
+			x=e[i]%10;
+			if(sep[x])
+				connect(x);
+		}
+		if(e[i]%10==d){
+			x=e[i]/10;
+			if(sep[x])
+				connect(x);
+		}
+	}
+}
+main(){
+	int i,b,d,ng;
+	for(;~scanf("%d",&n);){
+		b=0;
+		memset(sep,0,sizeof(sep));
+		for(i=n;i--;){
+			scanf("%d",&d);
+			e[i]=d;
+			b^=1<<d/10;
+			b^=1<<d%10;
+			sep[d/10]=sep[d%10]=1;
+		}
+		connect(e[0]/10);
+		ng=0;
+		for(i=0;i<7;i++)
+			ng|=sep[i];
+		for(d=0;b;d++)
+			b&=b-1;
+		puts(!ng&&(d==0||d==2)?"Yes":"No");
+	}
+}

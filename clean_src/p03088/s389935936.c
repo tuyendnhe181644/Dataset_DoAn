@@ -1,0 +1,204 @@
+#include <float.h>
+#include <limits.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+// 内部定数
+#define D_MOD			1000000007										// 除数(10の9乗+7)
+#define D_LEN_MAX		105												// 最大文字列長
+#define D_CHAR_KIND		4												// 文字種類数
+
+// 内部変数
+static FILE *szpFpI;													// 入力
+static int siLen;														// 文字列長
+static int si4Ptn[D_LEN_MAX][D_CHAR_KIND][D_CHAR_KIND][D_CHAR_KIND];	// パターン数[文字数][１文字目][２文字目][３文字目]
+
+// 内部変数 - テスト用
+#ifdef D_TEST
+	static int siRes;
+	static FILE *szpFpA;
+	static int siTNo;
+#endif
+
+// 出力
+int
+fOut(
+	char *pcpLine				// <I> １行
+)
+{
+	char lc1Buf[1024];
+
+#ifdef D_TEST
+	fgets(lc1Buf, sizeof(lc1Buf), szpFpA);
+	if (strcmp(lc1Buf, pcpLine)) {
+		siRes = -1;
+	}
+#else
+	printf("%s", pcpLine);
+#endif
+
+	return 0;
+}
+
+// NGパターン - クリア
+int
+fClearNG(
+	int piNo					// <I> 文字数
+)
+{
+	si4Ptn[piNo][0][2][1] = 0;				// AGC
+	si4Ptn[piNo][0][1][2] = 0;				// ACG
+	si4Ptn[piNo][2][0][1] = 0;				// GAC
+
+	return 0;
+}
+
+// 実行メイン
+int
+fMain(
+)
+{
+	int i, j, k, l, m;
+	char lc1Buf[1024];
+
+	// 文字列長 - 取得
+	fgets(lc1Buf, sizeof(lc1Buf), szpFpI);
+	sscanf(lc1Buf, "%d", &siLen);
+
+	// パターン数 - セット - ３文字目
+	for (i = 0; i < D_CHAR_KIND; i++) {
+		for (j = 0; j < D_CHAR_KIND; j++) {
+			for (k = 0; k < D_CHAR_KIND; k++) {
+				si4Ptn[3][i][j][k] = 1;
+			}
+		}
+	}
+	fClearNG(3);				// NGパターン - クリア
+
+	// パターン数 - セット - ４文字目以降
+	for (i = 4; i <= siLen; i++) {
+
+		// セット
+		for (j = 0; j < D_CHAR_KIND; j++) {
+			for (k = 0; k < D_CHAR_KIND; k++) {
+				for (l = 0; l < D_CHAR_KIND; l++) {
+					for (m = 0; m < D_CHAR_KIND; m++) {
+						si4Ptn[i][j][k][l] += si4Ptn[i - 1][m][j][k];
+						si4Ptn[i][j][k][l] %= D_MOD;
+					}
+				}
+			}
+		}
+
+		// 減算
+		si4Ptn[i][2][2][1] -= si4Ptn[i - 1][0][2][2];		// AGGC (GGC - AGG)
+		if (si4Ptn[i][2][2][1] < 0) {
+			si4Ptn[i][2][2][1] += D_MOD;
+		}
+		si4Ptn[i][3][2][1] -= si4Ptn[i - 1][0][3][2];		// ATGC (TGC - ATG)
+		if (si4Ptn[i][3][2][1] < 0) {
+			si4Ptn[i][3][2][1] += D_MOD;
+		}
+		si4Ptn[i][2][3][1] -= si4Ptn[i - 1][0][2][3];		// AGTC (GTC - AGT)
+		if (si4Ptn[i][2][3][1] < 0) {
+			si4Ptn[i][2][3][1] += D_MOD;
+		}
+
+		// NGパターン - クリア
+		fClearNG(i);
+	}
+
+	// パターン数合計 - 取得
+	int liSum = 0;
+	for (i = 0; i < D_CHAR_KIND; i++) {
+		for (j = 0; j < D_CHAR_KIND; j++) {
+			for (k = 0; k < D_CHAR_KIND; k++) {
+				liSum += si4Ptn[siLen][i][j][k];
+				liSum %= D_MOD;
+			}
+		}
+	}
+
+	return liSum;
+}
+
+// １回実行
+int
+fOne(
+)
+{
+	int liRet;
+	char lc1Buf[1024];
+
+	// データ - 初期化
+	memset(si4Ptn, 0, sizeof(si4Ptn));							// パターン数
+
+	// 入力 - セット
+#ifdef D_TEST
+	sprintf(lc1Buf, ".\\Test\\T%d.txt", siTNo);
+	szpFpI = fopen(lc1Buf, "r");
+	sprintf(lc1Buf, ".\\Test\\A%d.txt", siTNo);
+	szpFpA = fopen(lc1Buf, "r");
+	siRes = 0;
+#else
+	szpFpI = stdin;
+#endif
+
+	// 実行メイン
+	liRet = fMain();
+
+	// 結果 - セット
+	sprintf(lc1Buf, "%d\n", liRet);
+
+	// 結果 - 出力
+	fOut(lc1Buf);
+
+	// 残データ有無
+#ifdef D_TEST
+	lc1Buf[0] = '\0';
+	fgets(lc1Buf, sizeof(lc1Buf), szpFpA);
+	if (strcmp(lc1Buf, "")) {
+		siRes = -1;
+	}
+#endif
+
+	// テストファイルクローズ
+#ifdef D_TEST
+	fclose(szpFpI);
+	fclose(szpFpA);
+#endif
+
+	// テスト結果
+#ifdef D_TEST
+	if (siRes == 0) {
+		printf("OK %d\n", siTNo);
+	}
+	else {
+		printf("NG %d\n", siTNo);
+	}
+#endif
+
+	return 0;
+}
+
+// プログラム開始
+int
+main()
+{
+
+#ifdef D_TEST
+	int i;
+	for (i = D_TEST_SNO; i <= D_TEST_ENO; i++) {
+		siTNo = i;
+		fOne();
+	}
+#else
+	fOne();
+#endif
+
+	return 0;
+}
+

@@ -1,0 +1,30 @@
+char*p,x[1<<17],b[1001],*q;
+A(){for(;p>x&&p[-1]-10;)p--;}
+E(){for(;*p>10;)p++;}
+F(){if(*p)p++;}
+B(){if(p>x)p--;}
+main(c){
+	for(p=x;p<x+13||strcmp(p-13,"\nEND_OF_TEXT\n");p++)
+		*p=getchar();
+	p[-13]=0;
+	for(p=x;~scanf("%s",&c);)
+		c-'a'?
+		c-'e'?
+		c-'p'?
+		c-'n'?
+		c-'f'?
+		c-'b'?
+		c-'d'?
+		c-'k'?
+		c-'y'?
+		puts(x)
+		:(memmove(p+strlen(b),p,strlen(p)+1),memcpy(p,b,strlen(b)),p+=strlen(b))
+		:(q=p,*p-10?E():p++,b[p-q]=!memcpy(b,q,p-q),p=memmove(q,p,strlen(p)+1))
+		:*p&&memmove(p,p+1,strlen(p))
+		:B()
+		:F()
+		:A(F(E()))
+		:A(B(A()))
+		:E()
+		:A();
+}

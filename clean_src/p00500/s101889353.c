@@ -1,0 +1,42 @@
+#include<stdio.h>
+int main(void){
+    int n,a[1000]={0},b[1000]={0},c[1000]={0},cuta[1000],cutb[1000],cutc[1000],i,j,k,x,y[1000]={0},z;
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        scanf("%d",&a[i]);
+        scanf("%d",&b[i]);
+        scanf("%d",&c[i]);
+    }
+    for(j=0;j<n;j++){
+        for(k=j+1;k<n;k++){
+            if(a[j]==a[k]){
+                cuta[j]=1;
+                cuta[k]=1;
+            }
+        }
+    }
+    for(j=0;j<n;j++){
+        for(k=j+1;k<n;k++){
+            if(b[j]==b[k]){
+                cutb[j]=1;
+                cutb[k]=1;
+            }
+        }
+    }
+    for(j=0;j<n;j++){
+        for(k=j+1;k<n;k++){
+            if(c[j]==c[k]){
+                cutc[j]=1;
+                cutc[k]=1;
+            }
+        }
+    }
+    for(i=0;i<n;i++){
+        if(cuta[i]==1)a[i]=0;
+        if(cutb[i]==1)b[i]=0;
+        if(cutc[i]==1)c[i]=0;
+        z=a[i]+b[i]+c[i];
+        printf("%d\n",z);
+    }
+    return 0;
+}

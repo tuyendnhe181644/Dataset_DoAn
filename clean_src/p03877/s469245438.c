@@ -1,0 +1,1 @@
+long long n,a,b,c,f[5006][5006],i,j,r,y,s,m=1000000007;main(){scanf("%llu%llu%llu%llu",&n,&a,&b,&c);if(b%2)exit(!puts("0"));for(f[0][0]=1;++i<=n;s=c+3)for(f[i][j=0]=1;++j<=i;)f[i][j]=(f[i-1][j-1]+f[i-1][j])%m;for(i=0;(s-=3)>=0;r+=y%m*f[a+b/2+i][i]%m,i++)if(b)for(y=j=0;j<=a&&j<=s;j++)y+=f[a][j]*f[s+b/2-1-j][b/2-1]%m;else if(s<=a)y=f[a][s];printf("%lld\n",r%m*f[a+b/2][a]%m);}

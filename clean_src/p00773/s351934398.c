@@ -1,0 +1,39 @@
+#include<stdio.h>
+int main(void){
+  int x,y,s,a=0,b,h1=0,h2=0,sum=0,hh1,hh2;
+  while(1){
+  scanf("%d %d %d",&x,&y,&s);
+  if(x==0&&y==0&&s==0)
+    break;
+  for(a=1;a<=s/2;a++){
+    b=s-a;
+    if((100*a)%(100+x)!=0){
+    h1=a*100/(100+x)+1;
+    }
+    else
+    h1=a*100/(100+x);
+    if((b*100)%(100+x)!=0)
+    h2=b*100/(100+x)+1;
+    else
+    h2=b*100/(100+x);
+    hh1=h1*(100+x)/100;
+    hh2=h2*(100+x)/100;
+    if(hh1!=a){
+      h1=0;
+      h2=0;
+    }
+    if(hh2!=b){
+      h1=0;
+      h2=0;
+    }
+    h1=h1*(100+y)/100;
+    h2=h2*(100+y)/100;
+    if(sum<h1+h2){
+      sum=h1+h2;
+    }
+  }
+  printf("%d\n",sum);
+  sum=0;
+  }
+  return(0);
+}

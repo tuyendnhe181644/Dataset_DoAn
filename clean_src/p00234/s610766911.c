@@ -1,0 +1,110 @@
+W,H,m,c[10][10];
+DP[11][10][10][10][51];//cà[yÀW][xÀW][¶[][E[][_fcÊ]
+#define Update(tgt,val) ((val)>(tgt)?tgt=(val):0)
+CalcO(o,x,y){//_fcÊÌvZ
+	if(c[x][y]>0){
+		o+=c[x][y];
+		if(o>m)
+			o=m;
+	}
+	return o;
+}
+CalcF(f,x,y){//càÌvZ
+	if(c[x][y]<0)
+		f+=c[x][y];
+	return f;
+}
+main(){
+	int x,y,range,d,dx,f,o,xl,xr,fn,on,f0;
+	for(;scanf("%d%d",&W,&H),W;){
+		scanf("%d%d%d",&f0,&m,&o);
+		for(y=0;y<H;y++)
+			for(x=0;x<W;x++)
+				scanf("%d",&c[x][y]);
+		f0++;//cà0ÅàDPÍ1ÆµÄANAÉÈéÌðh®
+		for(y=0,x=0;x<W;x++)
+			DP[y][x][x][x][o]=f0;
+		for(y=0;y<H;y++){
+			for(range=0;range<W;range++){//¶EÉ@éL³
+				for(o=m;o>1;o--){
+					for(d=0;d<2;d++){//»ÝÊuxð³¹é
+						for(xl=0;xl<W-range;xl++){//¶[
+							for(dx=0;dx<=range;dx++){//xÏÊ
+								xr=xl+range;
+								x=d?xl+dx:xr-dx;
+								//printf("range=%d, d=%d, xl=%d, dx=%d, xr=%d, x=%d\n",range,d,xl,dx,xr,x);
+								if(f=DP[y][x][xl][xr][o]){
+									//ºÖ@é
+									fn=CalcF(f,x,y);
+									on=CalcO(o-1,x,y);
+									Update(DP[y+1][x][x][x][on],fn);
+									if(y>0){
+										if(x>0){
+											if(x==xl){//¶Ö@é
+												fn=CalcF(f,x-1,y-1);
+												on=CalcO(o-1,x-1,y-1);
+												Update(DP[y][x-1][x-1][xr][on],fn);
+											}else{//¶ÖiÞ
+												Update(DP[y][x-1][xl][xr][o-1],f);
+											}
+										}
+										if(x<W-1){
+											if(x==xr){//EÖ@é
+												fn=CalcF(f,x+1,y-1);
+												on=CalcO(o-1,x+1,y-1);
+												Update(DP[y][x+1][xl][x+1][on],fn);
+											}else{//EÖiÞ
+												Update(DP[y][x+1][xl][xr][o-1],f);
+											}
+										}
+									}
+									//break;
+								}
+							}//dx
+						}//xl
+					}//d
+				}//o
+			}//range
+		}//y
+#if 0
+		for(y=0;y<H;y++){
+			for(x=0;x<W;x++){
+				int fn=0,xln=9,xrn=9,on=0;
+				for(xl=0;xl<W;xl++){
+					for(xr=0;xr<W;xr++){
+						for(o=m;o>0;o--){
+							f=DP[y][x][xl][xr][o];
+							//if(f)printf("DP[%d][%d<=%d<=%d][%2d]=%3d\n",y,xl,x,xr,o,f0-f);
+							if(f>fn)
+								fn=f,xln=xl,xrn=xr,on=o;
+						}
+					}
+				}
+				#if 1
+				if(fn)
+					printf("%4d[%d,%d,%3d] ",f0-fn,xln,xrn,on);
+				else
+					printf("              ");
+				#endif
+			}
+			puts("");
+		}
+#endif
+		fn=0;
+		for(x=0;x<W;x++){
+			for(xl=0;xl<W;xl++){
+				for(xr=0;xr<W;xr++){
+					for(o=m;o>0;o--){
+						f=DP[H][x][xl][xr][o];
+						if(f>fn)
+							fn=f;
+					}
+				}
+			}
+		}
+		printf(fn?"%d\n":"NA\n",f0-fn);
+		memset(DP,0,sizeof(DP));
+	}
+	//puts("");
+	exit(0);
+}

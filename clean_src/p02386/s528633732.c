@@ -1,0 +1,239 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+ 
+
+
+/*???????????????????????????????????????n????????????*/
+typedef struct{
+  int n;
+  int *soeji;
+}group;
+
+
+
+/*??????????????????????????\??£?????????????????????????????????????¨?????????°????????????????????????????????¨????????????????????????????????????
+daihyou???????°???????????????°??????????????????????????????size???????????????????????????????´?????????????????????¨??????*/
+typedef struct{
+  int **saikoro;
+  int size;
+  int *daihyou;
+}saikorogun;
+
+
+/*?????????????????¨???????????¨*/
+typedef struct{
+  saikorogun **S;
+  int kosuu;
+}list;
+
+
+group *make_group(){
+  group *p;
+  p=malloc(sizeof(group));
+  p->soeji=malloc(7*sizeof(int));
+  p->n=0;
+  return p;
+}
+
+
+saikorogun *make_saikorogun(){
+  int i;
+  saikorogun* p;
+  p=malloc(sizeof(saikorogun));
+  p->daihyou=malloc(7*sizeof(int));
+  p->saikoro=malloc(30*sizeof(int *));
+  for(i=0;i<=30;i++) p->saikoro[i]=malloc(7*sizeof(int));
+  return p;
+}
+
+
+
+list *make_list(int n){
+  list *p;
+  p=malloc(sizeof(list *));
+  p->S=malloc((n+1)*sizeof(saikorogun *));
+  p->kosuu=0;
+  return p;
+}
+
+
+/*original???saikoro[0]??¨??????saikoro[0]?????¢?????????????????¨?????????
+??????saikoro???????????¢?????¢????????§??°??????????????????????????????????????????????????°??¨??????????????¨??????*/
+void add_group(int *original,int *saikoro,group **G,int i){
+  int j;
+  for(j=2;j<=6;j++){
+    if(saikoro[6]==original[j]){
+      if(G[j]->n==6){
+        printf("No\n");
+        exit(0);
+      }
+      G[j]->soeji[(G[j]->n) +1]=i;
+      G[j]->n+=1;
+    }
+  }
+}
+
+
+
+void makecopy(int *saikoro,int *copy){
+  int i;
+  for(i=1;i<=6;i++){
+    copy[i]=saikoro[i];
+  }
+}
+
+
+void soroe(int ue,int *saikoro){
+  int *copy;
+  int i;
+  copy=malloc(7*sizeof(int));
+  makecopy(saikoro,copy);
+  char order[8]="SSSSEEEE";
+  for(i=0;i<8;i++){
+      if(order[i]=='S'){
+        saikoro[2]=copy[1];
+        saikoro[6]=copy[2];
+        saikoro[5]=copy[6];
+        saikoro[1]=copy[5];
+        makecopy(saikoro,copy);
+      }
+      if(order[i]=='N'){
+        saikoro[1]=copy[2];
+        saikoro[2]=copy[6];
+        saikoro[6]=copy[5];
+        saikoro[5]=copy[1];
+        makecopy(saikoro,copy);
+      }
+      if(order[i]=='W'){
+        saikoro[4]=copy[1];
+        saikoro[6]=copy[4];
+        saikoro[3]=copy[6];
+        saikoro[1]=copy[3];
+        makecopy(saikoro,copy);
+      }
+      if(order[i]=='E'){
+        saikoro[1]=copy[4];
+        saikoro[4]=copy[6];
+        saikoro[6]=copy[3];
+        saikoro[3]=copy[1];
+        makecopy(saikoro,copy);
+      }
+      if(saikoro[1]==ue) break;
+  }
+  free(copy);
+}
+
+
+void syoumensoroe(group *g,int **saikoro){
+   int i,k;
+   int *copy;
+   copy=malloc(7*sizeof(int));
+   for(i=2;i<=(g->n);i++){
+     k=g->soeji[i];
+     while(saikoro[k][2]!=saikoro[g->soeji[1]][2]){
+      makecopy(saikoro[k],copy);
+      saikoro[k][2]=copy[3];
+      saikoro[k][4]=copy[2];
+      saikoro[k][5]=copy[4];
+      saikoro[k][3]=copy[5];
+    }
+  }
+}
+
+
+void hantei(int **saikoro,int n){
+  int *copy,i,ue,j,k;
+  group **G;
+  G=malloc(7*sizeof(group *));
+  for(i=2;i<7;i++) G[i]=make_group();
+  add_group(saikoro[1],saikoro[1],G,1);
+  ue=saikoro[1][1];
+  for(i=2;i<=n;i++){
+    soroe(ue,saikoro[i]);
+    add_group(saikoro[1],saikoro[i],G,i);
+  }
+  for(i=2;i<7;i++){
+    if((G[i]->n)>1){
+      syoumensoroe(G[i],saikoro);
+      for(j=1;j<(G[i]->n);j++){
+        for(k=j+1;k<=(G[i]->n);k++){
+          if(saikoro[G[i]->soeji[j]][3]==saikoro[G[i]->soeji[k]][3] && saikoro[G[i]->soeji[j]][4]==saikoro[G[i]->soeji[k]][4] && saikoro[G[i]->soeji[j]][5]==saikoro[G[i]->soeji[k]][5]){
+            printf("No\n");
+            exit(0);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+/*?????????????????????????????????L???????´??????????*/
+void add_list(int *saikoro,list *L){
+  int *copy,*narabikae;
+  int i,soeji,j,hanteii=0;
+  saikorogun *S;
+  narabikae=malloc(7*sizeof(int));
+  copy=malloc(7*sizeof(int));
+  makecopy(saikoro,copy);
+  for(j=1;j<7;j++){
+    soeji=1;
+    for(i=2;i<7;i++){
+      if(copy[soeji]>copy[i]){
+        soeji=i;
+      }
+    }
+    narabikae[j]=copy[soeji];
+    copy[soeji]=999999;
+  }
+  for(i=1;i<=L->kosuu;i++){
+      if(L->S[i]->daihyou[1]==narabikae[1] && L->S[i]->daihyou[2]==narabikae[2] && L->S[i]->daihyou[3]==narabikae[3] &&
+      L->S[i]->daihyou[4]==narabikae[4] && L->S[i]->daihyou[5]==narabikae[5] && L->S[i]->daihyou[6]==narabikae[6]){
+        S=L->S[i];
+        if(S->size==30){
+          printf("No\n");
+          exit(0);
+        }
+        for(j=1;j<=6;j++) S->saikoro[(S->size)+1][j]=saikoro[j];
+        S->size+=1;
+        hanteii=1;
+      }
+  }
+  if(hanteii==0){
+    L->S[(L->kosuu)+1]=make_saikorogun();
+    S=L->S[(L->kosuu)+1];
+    for(j=1;j<=6;j++) S->saikoro[1][j]=saikoro[j];
+    S->daihyou=narabikae;
+    S->size=1;
+    L->kosuu+=1;
+  }
+}
+  
+
+int main(){
+  int n,i,j,nankome;
+  list *L;
+  int *saikoro;
+  saikoro=malloc(7*sizeof(int));
+  scanf("%d",&n);
+  L=make_list(n);
+  for(i=1;i<=n;i++){
+    for(j=1;j<=6;j++){
+      scanf("%d",&saikoro[j]);
+    }
+    add_list(saikoro,L);
+  }
+  for(i=1;i<=(L->kosuu);i++){
+    hantei(L->S[i]->saikoro,L->S[i]->size);
+  }
+  printf("Yes\n");
+  return 0;
+}
+      
+  
+  
+  
+  
+  

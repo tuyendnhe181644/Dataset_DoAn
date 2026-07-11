@@ -1,0 +1,90 @@
+#include<stdio.h>
+int main(void){
+    int n,k,x,y;
+    int a,b,c,d,e,f,g,h,i,j;
+    scanf("%d",&n);
+    scanf("%d",&k);
+    if(n%2==1){//1
+        for(a=0;a<k;a++){
+            scanf("%d%d",&x,&y);
+            if(x+y<=n+1){//2
+                if(x<=y){//3
+                    if(x%3==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",x%3);
+                    }
+                }
+                else{//3
+                    if(y%3==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",y%3);
+                    }
+                }
+            }
+            else if(x+y>n+1){//2
+                if(x<=y){//3
+                    if((n-y)%3+1==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",(n-y)%3+1);
+                    }
+                }
+                else{//3
+                    if((n-x)%3+1==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",(n-x)%3+1);
+                    }
+                }
+            }
+        }
+    }
+    else if(n%2==0){//1
+        for(a=0;a<k;a++){
+            scanf("%d%d",&x,&y);
+            if(x+y<=n+1){//2
+                if(x<=y){//3
+                    if(x%3==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",x%3);
+                    }
+                }
+                else{//3
+                    if(y%3==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",y%3);
+                    }
+                }
+            }
+            else if(x+y>n+1){//2
+                if(x<=y){//3
+                    if((n-y)%3+1==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",(n-y)%3+1);
+                    }
+                }
+                else{//3
+                    if((n-x)%3+1==0){
+                        printf("3\n");
+                    }
+                    else{
+                        printf("%d\n",(n-x)%3+1);
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}

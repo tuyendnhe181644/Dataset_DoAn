@@ -8,9 +8,9 @@ Tài liệu này mô tả cấu trúc, nội dung và các quy tắc được s�
 Bộ dữ liệu này được lọc từ Project_CodeNet với các tiêu chí nghiêm ngặt nhằm phục vụ cho các nghiên cứu, phân tích hoặc huấn luyện mô hình code:
 * **Ngôn ngữ lập trình**: C (`.c`)
 * **Trạng thái lời giải**: Chỉ giữ lại các lời giải được chấp nhận (**Accepted** - chạy đúng và vượt qua các test cases).
-* **Độ dài token**: Chỉ chọn các file có số lượng token từ **200 đến 8000** (inclusive).
-* **Khử trùng lặp (Deduplication)**: Loại bỏ các bài toán trùng lặp đề bài bằng cách sử dụng dữ liệu cụm bài toán giống nhau (`identical_problem_clusters`). Với mỗi cụm trùng lặp, chỉ giữ lại duy nhất **1 lời giải tối ưu nhất** (ưu tiên lời giải có độ dài token lớn nhất, tiệm cận gần 8000 nhất).
-* **Kiểm thử động và Biên dịch**: Chỉ giữ lại các bài toán có sẵn đầy đủ dữ liệu kiểm thử mẫu (I/O) và biên dịch/kiểm thử động thành công 100% trên tất cả 7 tổ hợp kỹ thuật làm rối mã nguồn.
+* **Độ dài token**: Chỉ chọn các file có số lượng token từ **256 đến 8000** (inclusive).
+* **Khử trùng lặp (Deduplication)**: Loại bỏ các bài toán trùng lặp đề bài bằng cách sử dụng dữ liệu cụm bài toán giống nhau (`identical_problem_clusters`). Với mỗi cụm trùng lặp, chỉ giữ lại các lời giải tối ưu nhất (ưu tiên lời giải có độ dài token lớn nhất, tối đa 5 file mã nguồn C cho mỗi bài toán).
+* **Kiểm thử động và Biên dịch**: Chỉ giữ lại các file mã nguồn C cùng các file nhị phân làm rối tương ứng biên dịch thành công và kiểm thử động thành công 100% trên tất cả 7 tổ hợp kỹ thuật làm rối mã nguồn.
 
 ---
 
@@ -22,9 +22,12 @@ Thư mục dự án có cấu trúc như sau:
 Dataset_DoAn/
 ├── clean_src/
 │   ├── p00001/
-│   │   └── s637528533.c
+│   │   ├── s021326844.c
+│   │   ├── s092364643.c
+│   │   └── ... (tối đa 5 file mã nguồn C)
 │   ├── p00002/
-│   │   └── s312528849.c
+│   │   ├── s312528849.c
+│   │   └── ... (tối đa 5 file mã nguồn C)
 │   └── ...
 ├── input_output/
 │   ├── p00001/
@@ -36,13 +39,12 @@ Dataset_DoAn/
 │   └── ...
 ├── obfuscated_bin/
 │   ├── p00001/
-│   │   ├── s637528533_fla.elf
-│   │   ├── s637528533_bcf.elf
-│   │   ├── s637528533_fla_bcf_instsub.elf
-│   │   └── ... (đủ 7 tổ hợp nhị phân của s637528533)
-│   ├── p00002/
-│   │   ├── s312528849_fla.elf
-│   │   └── ... (đủ 7 tổ hợp nhị phân của s312528849)
+│   │   ├── s021326844_fla.elf
+│   │   ├── s021326844_bcf.elf
+│   │   ├── s021326844_fla_bcf_instsub.elf
+│   │   ├── ... (đủ 7 tổ hợp nhị phân của s021326844)
+│   │   ├── s092364643_fla.elf
+│   │   └── ... (đủ 7 tổ hợp nhị phân của s092364643)
 │   └── ...
 ├── Test_Thuc_Nghiem/
 │   ├── p00008/
@@ -62,13 +64,13 @@ Dataset_DoAn/
 ### Chi tiết các thành phần:
 1. **`clean_src/`**: Thư mục chứa các lời giải nguồn đã được làm sạch.
    - Mỗi thư mục con bên trong được đặt tên theo mã định danh bài toán (Ví dụ: `p00001`, `p00002`). Đây là **Mã bài toán đại diện** (ID nhỏ nhất trong nhóm trùng lặp) để đảm bảo bạn có thể ánh xạ trực tiếp sang file mô tả đề bài dạng HTML (Ví dụ: `p00001.html` trong thư mục `problem_descriptions/`).
-   - Mỗi thư mục con chứa đúng **1 file lời giải duy nhất** dạng `.c` với tên file giữ nguyên mã submission gốc (Ví dụ: `s637528533.c`).
+   - Mỗi thư mục chứa tối đa **5 file lời giải** dạng `.c` với tên file giữ nguyên mã submission gốc (Ví dụ: `s021326844.c`, `s092364643.c`).
 2. **`input_output/`**: Thư mục chứa các tệp dữ liệu kiểm thử mẫu tương ứng với các bài toán đã được lọc:
    - Các thư mục con được đặt tên trùng khớp hoàn toàn với thư mục trong `clean_src/` (Mã bài toán đại diện `pXXXXX`).
    - Mỗi thư mục con chứa:
      - `input.txt`: Dữ liệu đầu vào mẫu (sample input).
      - `output.txt`: Kết quả đầu ra mong đợi mẫu (sample output).
-   - Toàn bộ **2035** bài toán trong bộ dữ liệu đều có sẵn đầy đủ dữ liệu kiểm thử mẫu này.
+   - Toàn bộ **2817** bài toán trong bộ dữ liệu đều có sẵn đầy đủ dữ liệu kiểm thử mẫu này.
 3. **`obfuscated_bin/`**: Thư mục chứa các tệp nhị phân đã được biên dịch và áp dụng các tổ hợp làm rối mã nguồn C.
    - Các thư mục con tương ứng với mã bài toán `pXXXXX`.
    - Mỗi tệp có định dạng tên: `[submission_id]_[suffix].elf`, trong đó `suffix` là chuỗi thể hiện các kỹ thuật làm rối được kích hoạt.
@@ -92,7 +94,7 @@ File CSV này chứa thông tin ánh xạ chi tiết với các cột sau:
 | **`problem_id`** | String | Mã thư mục lưu trữ lời giải (chính là mã bài toán đại diện cho nhóm trùng lặp). | `p00001` |
 | **`representative_problem_id`** | String | Mã bài toán gốc trong dataset ban đầu nơi file lời giải này được trích xuất ra. | `p00001` |
 | **`submission_id`** | String | Mã định danh submission của lời giải (tên file `.c`). | `s637528533` |
-| **`token_count`** | Integer | Số lượng tokens của file mã nguồn (nằm trong khoảng `[200, 8000]`). | `691` |
+| **`token_count`** | Integer | Số lượng tokens của file mã nguồn (nằm trong khoảng `[256, 8000]`). | `691` |
 | **`file_size_bytes`** | Integer | Kích thước của file mã nguồn tính bằng bytes. | `2866` |
 
 ---
@@ -173,8 +175,8 @@ Do toàn bộ tập dữ liệu đã được lọc sạch nên trạng thái ki
 ---
 
 ## 6. Thống kê bộ dữ liệu (Dataset Statistics)
-* **Tổng số bài toán/mẫu độc lập**: 2,035 bài toán.
-* **Số lượng token tối thiểu**: 200 tokens.
-* **Số lượng token tối đa**: 7,622 tokens.
+* **Tổng số bài toán/mẫu độc lập**: 2,817 bài toán.
+* **Số lượng token tối thiểu**: 256 tokens.
+* **Số lượng token tối đa**: 8,000 tokens.
 * **Trạng thái lời giải sạch (clean_src)**: 100% Accepted (đã qua kiểm tra chất lượng đề bài).
-* **Số lượng tệp nhị phân làm rối thực tế**: 2,035 × 7 = 14,245 tệp nhị phân nhãn.
+* **Số lượng tệp nhị phân làm rối thực tế**: 9,385 lời giải C × 7 kịch bản = 65,695 tệp nhị phân nhãn.

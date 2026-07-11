@@ -1,0 +1,51 @@
+// AOJ 2409: Power
+// 2017.11.28 bal4u@uu
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct { int a, b; char used; } T;
+T cover[102];
+
+int cmp(T *a, T *b)
+{
+	if (a->a - b->a) return a->a - b->a;	// ???????????????????????????????????????
+	return b->b - a->a;						// ??????????????????????????????????????????????????????????????????
+}
+
+int main()
+{
+	int n, m, a, b, i, x, f, ans, min, max;
+
+	scanf("%d%d", &n, &m);
+	min = n+1, max = 0;
+	for (i = 0; i < m; i++) {
+		scanf("%d%d", &a, &b);
+		if (a < min) min = a;
+		if (b > max) max = b;
+		cover[i].a = a, cover[i].b = b, cover[i].used = 0;
+	}
+
+	if (1 < min || max < n) goto na;
+	qsort(cover, m, sizeof(T), cmp);
+
+	ans = 0;
+	for (x = 1; x <= n; x++) {
+		f = 0, max = 0;
+		for (i = 0; i < m; i++) {
+			if (cover[i].used) continue;
+			if (x < cover[i].a) {
+				if (!f) goto na;
+				break;
+			}
+			f = 1;
+			if (max < cover[i].b) max = cover[i].b, cover[i].used = 1;
+		}
+		if (!f) goto na;
+		ans++, x = max;
+	}
+	printf("%d\n", ans);
+	return 0;
+na: puts("Impossible");
+	return 0;
+}
