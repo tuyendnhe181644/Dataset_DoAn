@@ -243,9 +243,9 @@ Nghĩa là file này có 3 hàm, tổng độ phức tạp tuần hoàn là 13, 
 | 9 | `p02716` | `s293754775` | 2946 | 86 | 51 | 119 / 8 | 68 | 79.07% | 9 |
 | 10 | `p03780` | `s979265054` | 2345 | 122 | 46 | 104 / 12 | 58 | 47.54% | 10 |
 
-## 9. Câu trả lời ngắn khi bảo vệ với giáo viên
+## 9. Tổng kết về tập được chọn
 
-Tập 40 chương trình không được chọn thủ công. Nhóm trước hết chỉ giữ các chương trình C hợp lệ từ Project_CodeNet: Accepted, có input/output, token trong [256, 8000], biên dịch và chạy thành công sau khi làm rối bằng MIX3. Sau đó mỗi bài toán chỉ giữ một submission đại diện để tránh trùng lặp. Trên mã C sạch, nhóm tính `token_count` và `CF Density`; từ đó chia dữ liệu thành bốn tầng: ngắn–đơn giản, ngắn–phức tạp, dài–đơn giản và dài–phức tạp. Mỗi tầng chọn 10 chương trình bằng random seed cố định, nên kết quả có thể tái lập và không phụ thuộc vào lựa chọn chủ quan.
+Tập 40 chương trình không được chọn thủ công. Trước hết chỉ giữ các chương trình C hợp lệ từ Project_CodeNet: Accepted, có input/output, token trong [256, 8000], biên dịch và chạy thành công sau khi làm rối bằng MIX3. Sau đó mỗi bài toán chỉ giữ một submission đại diện để tránh trùng lặp. Trên mã C sạch, nhóm tính `token_count` và `CF Density`; từ đó chia dữ liệu thành bốn tầng: ngắn–đơn giản, ngắn–phức tạp, dài–đơn giản và dài–phức tạp. Mỗi tầng chọn 10 chương trình bằng random seed cố định, nên kết quả có thể tái lập và không phụ thuộc vào lựa chọn chủ quan.
 
 ## 10. Giới hạn của tập chọn
 
