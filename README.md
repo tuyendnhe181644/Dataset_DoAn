@@ -28,7 +28,7 @@ Dataset_DoAn/
 │   ├── p00002/
 │   │   ├── s312528849.c
 │   │   └── ... (tối đa 5 file mã nguồn C)
-│   └── ...
+│   └── ... (tổng cộng 2,628 bài toán)
 ├── input_output/
 │   ├── p00001/
 │   │   ├── input.txt
@@ -36,7 +36,7 @@ Dataset_DoAn/
 │   ├── p00002/
 │   │   ├── input.txt
 │   │   └── output.txt
-│   └── ...
+│   └── ... (tổng cộng 2,628 bài toán)
 ├── obfuscated_bin/
 │   ├── p00001/
 │   │   ├── s021326844_fla.elf
@@ -45,43 +45,52 @@ Dataset_DoAn/
 │   │   ├── ... (đủ 7 tổ hợp nhị phân của s021326844)
 │   │   ├── s092364643_fla.elf
 │   │   └── ... (đủ 7 tổ hợp nhị phân của s092364643)
-│   └── ...
-├── Test_Thuc_Nghiem/
-│   ├── p00008/
-│   │   ├── s178043981.c (Mã nguồn C gốc)
-│   │   ├── input.txt
-│   │   ├── output.txt
-│   │   ├── s178043981_fla.elf
-│   │   ├── s178043981_bcf.elf
-│   │   └── ... (đủ cả 7 file nhị phân bị làm rối)
-│   └── ...
+│   └── ... (tổng cộng 2,628 bài toán)
+├── Data_Thuc_Nghiem/
+│   ├── short_simple/
+│   │   └── pXXXXX/
+│   │       ├── sXXXXXXXXX.c
+│   │       ├── input.txt
+│   │       ├── output.txt
+│   │       └── sXXXXXXXXX_fla_bcf_instsub.elf
+│   ├── short_complex/
+│   ├── long_simple/
+│   ├── long_complex/
+│   ├── selected_40_metadata.csv
+│   ├── selected_40_metadata.jsonl
+│   ├── stratified_candidates.csv
+│   └── selection_report.md
 ├── clean_src_metadata.csv
 ├── metadata.json
 ├── metadata.jsonl
+├── select_data_thuc_nghiem.py
+├── update_metadata.py
 └── README.md (File này)
 ```
 
 ### Chi tiết các thành phần:
 1. **`clean_src/`**: Thư mục chứa các lời giải nguồn đã được làm sạch.
-   - Mỗi thư mục con bên trong được đặt tên theo mã định danh bài toán (Ví dụ: `p00001`, `p00002`). Đây là **Mã bài toán đại diện** (ID nhỏ nhất trong nhóm trùng lặp) để đảm bảo bạn có thể ánh xạ trực tiếp sang file mô tả đề bài dạng HTML (Ví dụ: `p00001.html` trong thư mục `problem_descriptions/`).
+   - Mỗi thư mục con bên trong được đặt tên theo mã định danh bài toán (Ví dụ: `p00001`, `p00002`). Đây là **Mã bài toán đại diện** (ID nhỏ nhất trong nhóm trùng lặp) để đảm bảo bạn có thể ánh xạ trực tiếp sang file mô tả đề bài dạng HTML.
    - Mỗi thư mục chứa tối đa **5 file lời giải** dạng `.c` với tên file giữ nguyên mã submission gốc (Ví dụ: `s021326844.c`, `s092364643.c`).
 2. **`input_output/`**: Thư mục chứa các tệp dữ liệu kiểm thử mẫu tương ứng với các bài toán đã được lọc:
    - Các thư mục con được đặt tên trùng khớp hoàn toàn với thư mục trong `clean_src/` (Mã bài toán đại diện `pXXXXX`).
    - Mỗi thư mục con chứa:
      - `input.txt`: Dữ liệu đầu vào mẫu (sample input).
      - `output.txt`: Kết quả đầu ra mong đợi mẫu (sample output).
-   - Toàn bộ **2817** bài toán trong bộ dữ liệu đều có sẵn đầy đủ dữ liệu kiểm thử mẫu này.
+   - Toàn bộ **2,628** bài toán trong bộ dữ liệu đều có sẵn đầy đủ dữ liệu kiểm thử mẫu này.
 3. **`obfuscated_bin/`**: Thư mục chứa các tệp nhị phân đã được biên dịch và áp dụng các tổ hợp làm rối mã nguồn C.
    - Các thư mục con tương ứng với mã bài toán `pXXXXX`.
    - Mỗi tệp có định dạng tên: `[submission_id]_[suffix].elf`, trong đó `suffix` là chuỗi thể hiện các kỹ thuật làm rối được kích hoạt.
-4. **`Test_Thuc_Nghiem/`**: Thư mục con chứa tập mẫu dữ liệu thực nghiệm ngẫu nhiên bao gồm **210** bài toán có độ dài token từ thấp đến trung bình (độ dài token được chọn từ tập thấp đến trung bình).
-   - Mỗi thư mục con đại diện cho một bài toán (Ví dụ: `p00008`), bên trong chứa đúng:
-     - `[submission_id].c`: Mã nguồn C gốc (giữ nguyên tên gốc của lời giải bài toán).
-     - Đầy đủ cả 7 file nhị phân làm rối tương ứng với 7 kịch bản tổ hợp.
-     - Các tệp dữ liệu kiểm thử `input.txt`/`output.txt` đi kèm để người dùng dễ dàng lấy ra chạy thực nghiệm trực tiếp.
-5. **`clean_src_metadata.csv`**: File metadata lưu trữ thông tin chi tiết của từng lời giải mã nguồn C được chọn và mối liên hệ giữa các bài toán trùng lặp.
-6. **`metadata.json`**: File metadata chính thức dưới dạng mảng JSON (JSON Array), lưu trữ nhãn dữ liệu của toàn bộ tệp nhị phân làm rối phục vụ cho phân tích tĩnh/động.
+4. **`Data_Thuc_Nghiem/`**: Thư mục chứa tập 40 chương trình C được chọn lọc và phân tầng (Stratified Sampling) theo độ dài mã nguồn (`token_count`) và độ phức tạp luồng điều khiển (`cf_density` % tính bằng công cụ `lizard` trên mã C sạch).
+   - Được phân chia thành **4 tầng**: `short_simple`, `short_complex`, `long_simple`, `long_complex` (mỗi tầng 10 chương trình).
+   - Chỉ sử dụng duy nhất cấu hình làm rối phức tạp **MIX3 = FLA + BCF + INSTSUB**.
+   - Mỗi bài toán trong từng tầng chứa đúng 4 file: `[submission_id].c`, `input.txt`, `output.txt` và `[submission_id]_fla_bcf_instsub.elf`.
+   - Đi kèm các tệp lưu thông tin phân tầng `selected_40_metadata.csv`, `selected_40_metadata.jsonl`, `stratified_candidates.csv` và báo cáo tổng hợp chi tiết `selection_report.md`.
+5. **`clean_src_metadata.csv`**: File metadata lưu trữ thông tin chi tiết của từng lời giải mã nguồn C được chọn (`problem_id`, `submission_id`, `token_count`, `file_size_bytes`).
+6. **`metadata.json`**: File metadata chính thức dưới dạng mảng JSON (JSON Array), lưu trữ nhãn dữ liệu của toàn bộ 65,695 tệp nhị phân làm rối phục vụ cho phân tích tĩnh/động.
 7. **`metadata.jsonl`**: Phiên bản định dạng JSON Lines của `metadata.json`, trong đó mỗi dòng là một đối tượng JSON độc lập giúp dễ dàng đọc/ghi tuần tự hoặc tích hợp vào các pipeline huấn luyện.
+8. **`select_data_thuc_nghiem.py`**: Script Python tự động chọn lọc 40 mẫu cho `Data_Thuc_Nghiem` theo phân tầng 2 chiều (`token_count` × `cf_density`) với random seed cố định (`20260717`) đảm bảo kết quả tái lập tuyệt đối.
+9. **`update_metadata.py`**: Script Python quét toàn bộ thư mục `obfuscated_bin/` để đồng bộ hóa thực tế đĩa cứng, chạy kiểm thử động tự động cho các file nhị phân mới và cập nhật `metadata.json` / `metadata.jsonl`.
 
 ---
 
@@ -175,8 +184,10 @@ Do toàn bộ tập dữ liệu đã được lọc sạch nên trạng thái ki
 ---
 
 ## 6. Thống kê bộ dữ liệu (Dataset Statistics)
-* **Tổng số bài toán/mẫu độc lập**: 2,817 bài toán.
+* **Tổng số bài toán/mẫu độc lập**: **2,628** bài toán (`problem_id`).
+* **Tổng số file mã nguồn C gốc (`clean_src`)**: **9,385** lời giải C (`submission_id`).
 * **Số lượng token tối thiểu**: 256 tokens.
 * **Số lượng token tối đa**: 8,000 tokens.
 * **Trạng thái lời giải sạch (clean_src)**: 100% Accepted (đã qua kiểm tra chất lượng đề bài).
-* **Số lượng tệp nhị phân làm rối thực tế**: 9,385 lời giải C × 7 kịch bản = 65,695 tệp nhị phân nhãn.
+* **Số lượng tệp nhị phân làm rối thực tế**: 9,385 lời giải C × 7 kịch bản = **65,695** tệp nhị phân có nhãn.
+* **Tập mẫu thực nghiệm (`Data_Thuc_Nghiem/`)**: 40 chương trình (10 bài/tầng × 4 tầng phân tầng).
