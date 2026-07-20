@@ -4,7 +4,7 @@
 
 Tập thực nghiệm cuối cùng gồm **40 chương trình C độc lập**, được chia đều thành **4 tầng**, mỗi tầng **10 chương trình**. Tất cả chương trình đều có binary làm rối bằng cấu hình **MIX3 = FLA + BCF + INSTSUB**, có `input.txt`/`output.txt`, và có trạng thái kiểm thử động `SUCCESS` trong metadata gốc.
 
-Cách chọn không dựa trên lựa chọn thủ công. Quy trình gồm: lọc MIX3 hợp lệ → tính metric trên mã C sạch → mỗi `problem_id` giữ một submission đại diện → phân tầng theo `token_count` và `cf_density` → chọn ngẫu nhiên trong từng tầng bằng random seed cố định.
+Cách chọn không dựa trên lựa chọn thủ công. Quy trình gồm: lọc MIX3 hợp lệ → tính metric trên mã C gốc → mỗi `problem_id` giữ một submission đại diện → phân tầng theo `token_count` và `cf_density` → chọn ngẫu nhiên trong từng tầng bằng random seed cố định.
 
 ## 1. Cấu hình làm rối được sử dụng
 
@@ -47,7 +47,7 @@ Các loại mẫu bị loại trong quá trình lọc:
 
 ## 3. Các chỉ số dùng để phân tầng
 
-Các chỉ số dưới đây được tính trên **file C sạch trước khi làm rối**, không tính trên binary MIX3. Lý do là mục tiêu phân tầng là đo đặc điểm tự nhiên của chương trình gốc, tránh để kỹ thuật làm rối tự làm tăng CFG rồi ảnh hưởng đến việc chia nhóm.
+Các chỉ số dưới đây được tính trên **file C gốc trước khi làm rối**, không tính trên binary MIX3. Lý do là mục tiêu phân tầng là đo đặc điểm tự nhiên của chương trình gốc, tránh để kỹ thuật làm rối tự làm tăng CFG rồi ảnh hưởng đến việc chia nhóm.
 
 ### 3.1. `token_count` — độ dài mã nguồn
 
@@ -133,13 +133,8 @@ Bốn tầng cuối cùng là:
 | `long_simple` | Code dài, mật độ control flow thấp | 650 | 10 |
 | `long_complex` | Code dài, mật độ control flow cao | 651 | 10 |
 
-## 5. Cách chọn ngẫu nhiên có thể tái lập
 
-Random seed sử dụng: `20260717`.
-
-Mỗi tầng được chọn riêng bằng điểm ngẫu nhiên cố định sinh từ `seed + stratum + problem_id + submission_id`. Vì vậy, nếu dữ liệu đầu vào không đổi và seed không đổi, danh sách 40 chương trình sẽ được tạo lại giống hệt. Cách này hạn chế việc chọn thủ công hoặc cherry-picking.
-
-## 6. Cấu trúc thư mục đầu ra
+## 5. Cấu trúc thư mục đầu ra
 
 ```text
 Data_Thuc_Nghiem/
@@ -158,9 +153,9 @@ Data_Thuc_Nghiem/
 └── selection_report.md
 ```
 
-Mỗi thư mục `pXXXXX` chứa đúng bốn thành phần phục vụ thực nghiệm: mã nguồn C sạch, input mẫu, output mẫu và binary MIX3 tương ứng.
+Mỗi thư mục `pXXXXX` chứa đúng bốn thành phần phục vụ thực nghiệm: mã nguồn C gốc, input mẫu, output mẫu và binary MIX3 tương ứng.
 
-## 7. Ví dụ cách đọc một dòng trong bảng
+## 6. Ví dụ cách đọc một dòng trong bảng
 
 Ví dụ với dòng:
 
@@ -181,9 +176,9 @@ CF Density = 10 / 49 × 100 = 20.41%
 
 Nghĩa là file này có 3 hàm, tổng độ phức tạp tuần hoàn là 13, hàm phức tạp nhất có CC bằng 7, và trung bình cứ 100 dòng code thực tế thì có khoảng 20 điểm rẽ nhánh.
 
-## 8. Danh sách 40 chương trình được chọn
+## 7. Danh sách 40 chương trình được chọn
 
-### 8.1. Tầng `short_simple` (10 chương trình)
+### 7.1. Tầng `short_simple` (10 chương trình)
 
 | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
 |---:|---|---|---:|---:|---:|---:|---:|---:|---:|
@@ -198,7 +193,7 @@ Nghĩa là file này có 3 hàm, tổng độ phức tạp tuần hoàn là 13, 
 | 9 | `p00355` | `s497485517` | 437 | 72 | 15 | 21 / 3 | 6 | 8.33% | 9 |
 | 10 | `p02023` | `s093543805` | 417 | 42 | 4 | 9 / 4 | 5 | 11.90% | 10 |
 
-### 8.2. Tầng `short_complex` (10 chương trình)
+### 7.2. Tầng `short_complex` (10 chương trình)
 
 | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
 |---:|---|---|---:|---:|---:|---:|---:|---:|---:|
@@ -213,7 +208,7 @@ Nghĩa là file này có 3 hàm, tổng độ phức tạp tuần hoàn là 13, 
 | 9 | `p02035` | `s741239259` | 399 | 26 | 4 | 11 / 4 | 7 | 26.92% | 9 |
 | 10 | `p01401` | `s694164582` | 547 | 46 | 2 | 15 / 13 | 13 | 28.26% | 10 |
 
-### 8.3. Tầng `long_simple` (10 chương trình)
+### 7.3. Tầng `long_simple` (10 chương trình)
 
 | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
 |---:|---|---|---:|---:|---:|---:|---:|---:|---:|
@@ -228,7 +223,7 @@ Nghĩa là file này có 3 hàm, tổng độ phức tạp tuần hoàn là 13, 
 | 9 | `p03220` | `s260365906` | 792 | 101 | 14 | 25 / 4 | 11 | 10.89% | 9 |
 | 10 | `p03548` | `s937982714` | 1908 | 243 | 25 | 67 / 8 | 42 | 17.28% | 10 |
 
-### 8.4. Tầng `long_complex` (10 chương trình)
+### 7.4. Tầng `long_complex` (10 chương trình)
 
 | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
 |---:|---|---|---:|---:|---:|---:|---:|---:|---:|
@@ -243,10 +238,10 @@ Nghĩa là file này có 3 hàm, tổng độ phức tạp tuần hoàn là 13, 
 | 9 | `p02716` | `s293754775` | 2946 | 86 | 51 | 119 / 8 | 68 | 79.07% | 9 |
 | 10 | `p03780` | `s979265054` | 2345 | 122 | 46 | 104 / 12 | 58 | 47.54% | 10 |
 
-## 9. Câu trả lời ngắn khi bảo vệ với giáo viên
+## 8. Tổng kết tập chương trình được chọn
 
-Tập 40 chương trình không được chọn thủ công. Nhóm trước hết chỉ giữ các chương trình C hợp lệ từ Project_CodeNet: Accepted, có input/output, token trong [256, 8000], biên dịch và chạy thành công sau khi làm rối bằng MIX3. Sau đó mỗi bài toán chỉ giữ một submission đại diện để tránh trùng lặp. Trên mã C sạch, nhóm tính `token_count` và `CF Density`; từ đó chia dữ liệu thành bốn tầng: ngắn–đơn giản, ngắn–phức tạp, dài–đơn giản và dài–phức tạp. Mỗi tầng chọn 10 chương trình bằng random seed cố định, nên kết quả có thể tái lập và không phụ thuộc vào lựa chọn chủ quan.
+Tập 40 chương trình không được chọn thủ công. Trước hết chỉ giữ các chương trình C hợp lệ từ Project_CodeNet: Accepted, có input/output, token trong [256, 8000], biên dịch và chạy thành công sau khi làm rối bằng MIX3. Sau đó mỗi bài toán chỉ giữ một submission đại diện để tránh trùng lặp. Trên mã C gốc, nhóm tính `token_count` và `CF Density`; từ đó chia dữ liệu thành bốn tầng: ngắn–đơn giản, ngắn–phức tạp, dài–đơn giản và dài–phức tạp. Mỗi tầng chọn 10 chương trình bằng random seed cố định, nên kết quả có thể tái lập và không phụ thuộc vào lựa chọn chủ quan.
 
-## 10. Giới hạn của tập chọn
+## 9. Giới hạn của tập chọn
 
 Tập 40 chương trình này không nhằm đại diện thống kê cho toàn bộ Project_CodeNet. Đây là tập thực nghiệm có kiểm soát, dùng để đánh giá tính khả thi và độ bền của pipeline khi xử lý binary bị làm rối bằng một cấu hình kết hợp khó là MIX3. Do chỉ dùng MIX3, kết quả không tách riêng được lỗi do FLA, BCF hay INSTSUB gây ra.
