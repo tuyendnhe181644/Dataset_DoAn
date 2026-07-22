@@ -4,7 +4,7 @@
 
 Tập thực nghiệm cuối cùng gồm **40 chương trình C độc lập**, được chia đều thành **4 tầng**, mỗi tầng **10 chương trình**. Tất cả chương trình đều có binary làm rối bằng cấu hình **MIX3 = FLA + BCF + INSTSUB**, có `input.txt`/`output.txt`, và có trạng thái kiểm thử động `SUCCESS` trong metadata gốc.
 
-Cách chọn không dựa trên lựa chọn thủ công. Quy trình gồm: lọc MIX3 hợp lệ → tính metric trên mã C gốc → mỗi `problem_id` giữ một submission đại diện → phân tầng theo `token_count` và `cf_density` → chọn ngẫu nhiên trong từng tầng bằng random seed cố định.
+Cách chọn không dựa trên lựa chọn thủ công. Quy trình gồm: lọc MIX3 hợp lệ → tính metric trên mã C gốc → mỗi `problem_id` giữ một submission đại diện → phân tầng theo `token_count` và `cf_density` → chọn 10 chương trình/tầng bằng phương pháp **phân vùng + trung vị (Systematic stratified sampling using bucket medians)**.
 
 ## 1. Cấu hình làm rối được sử dụng
 
@@ -79,12 +79,6 @@ decision_points = Σ(CC_f - 1)
                 = cc_total - function_count
 ```
 
-Ví dụ: nếu một file có `function_count = 3` và `cc_total = 13`, thì:
-
-```text
-decision_points = 13 - 3 = 10
-```
-
 ### 3.5. `CF Density` — mật độ control flow
 
 `CF Density` cho biết mật độ điểm rẽ nhánh trên số dòng code thực tế:
@@ -93,12 +87,11 @@ decision_points = 13 - 3 = 10
 CF Density (%) = decision_points / NLOC × 100
 ```
 
-Chỉ số này giúp phân biệt hai trường hợp:
+Chỉ số này được dùng làm tiêu chí chính để phân chia `simple` và `complex` trong từng nhóm độ dài.
 
-- chương trình dài nhưng chủ yếu chạy tuần tự, ít nhánh;
-- chương trình ngắn nhưng dày đặc `if`, `for`, `while`, `switch`.
+### 3.6. `max_nesting_depth` — độ sâu lồng nhau lớn nhất
 
-Do đó, `CF Density` được dùng để chia `simple` và `complex` trong từng nhóm độ dài.
+`max_nesting_depth` phản ánh độ sâu lồng nhau tối đa của các khối lệnh điều khiển (`if`, `for`, `while`, `switch`, `do`). Chỉ số này dùng làm tiêu chí phụ để sắp xếp thứ tự các chương trình trong từng tầng.
 
 ## 4. Cách phân tầng
 
@@ -112,8 +105,6 @@ Sau khi gom còn **2602 problem_id độc lập**, các chương trình được
 |---|---:|---|
 | `short` | 1301 | token_count ≤ 700 |
 | `long` | 1301 | token_count ≥ 700 |
-
-> Lưu ý: Nếu hai nhóm có cùng giá trị token ở biên, ví dụ `short ≤ 729` và `long ≥ 729`, điều đó không mâu thuẫn. Script chia theo thứ hạng sau khi sắp xếp, không chia bằng điều kiện số học tuyệt đối.
 
 ### 4.2. Chia theo độ phức tạp control flow
 
@@ -133,8 +124,37 @@ Bốn tầng cuối cùng là:
 | `long_simple` | Code dài, mật độ control flow thấp | 650 | 10 |
 | `long_complex` | Code dài, mật độ control flow cao | 651 | 10 |
 
+## 5. Chọn 40 chương trình bằng phương pháp phân tầng + trung vị
 
-## 5. Cấu trúc thư mục đầu ra
+Nhóm sử dụng phương pháp: **“Chọn mẫu phân tầng có hệ thống bằng trung vị từng khoảng”** (*Systematic stratified sampling using bucket medians*).
+
+### 5.1. Sắp xếp chương trình trong từng tầng
+
+Trong mỗi tầng, các chương trình được sắp xếp theo thứ tự ưu tiên:
+
+```text
+CF Density tăng dần → max_nesting_depth tăng dần → token_count tăng dần
+```
+
+### 5.2. Chia mỗi tầng thành 10 khoảng
+
+Mỗi tầng được chia thành **10 khoảng (buckets)** xấp xỉ bằng nhau. Việc chia 10 khoảng giúp các chương trình đại diện trải đều trên toàn bộ phân bố của tầng.
+
+### 5.3. Chọn chương trình gần trung vị của mỗi khoảng
+
+Trong mỗi khoảng $i$ ($i = 0, 1, \dots, 9$), vị trí chọn được xác định theo công thức:
+
+```text
+N     = Số chương trình trong tầng
+K     = 10 khoảng
+start = floor(i × N / K)
+end   = floor((i + 1) × N / K) - 1
+mid   = floor((start + end) / 2)
+```
+
+Chương trình ở vị trí index `mid` trong danh sách đã sắp xếp được chọn.
+
+## 6. Cấu trúc thư mục đầu ra
 
 ```text
 Data_Thuc_Nghiem/
@@ -155,93 +175,89 @@ Data_Thuc_Nghiem/
 
 Mỗi thư mục `pXXXXX` chứa đúng bốn thành phần phục vụ thực nghiệm: mã nguồn C gốc, input mẫu, output mẫu và binary MIX3 tương ứng.
 
-## 6. Ví dụ cách đọc một dòng trong bảng
+## 7. Ví dụ cách đọc một dòng trong bảng
 
 Ví dụ với dòng:
 
 ```text
 problem_id = p01695, submission_id = s662103044
-function_count = 3, NLOC = 49, cc_total = 13, cc_max = 7
+function_count = 3, NLOC = 49, cc_total = 13, cc_max = 7, max_nesting_depth = 3
 ```
 
-Cách diễn giải đúng là:
+Cách diễn giải:
 
 ```text
-decision_points = cc_total - function_count
-                = 13 - 3
-                = 10
-
+decision_points = cc_total - function_count = 13 - 3 = 10
 CF Density = 10 / 49 × 100 = 20.41%
+Max Nesting Depth = 3 (khối điều khiển lồng nhau sâu nhất 3 cấp)
 ```
 
-Nghĩa là file này có 3 hàm, tổng độ phức tạp tuần hoàn là 13, hàm phức tạp nhất có CC bằng 7, và trung bình cứ 100 dòng code thực tế thì có khoảng 20 điểm rẽ nhánh.
+## 8. Danh sách 40 chương trình được chọn
 
-## 7. Danh sách 40 chương trình được chọn
+### 8.1. Tầng `short_simple` (10 chương trình)
 
-### 7.1. Tầng `short_simple` (10 chương trình)
+| Khoảng | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Max Nesting | Vị trí trong tầng |
+|---:|---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Khoảng 1 | 1 | `p04028` | `s626776881` | 442 | 48 | 4 | 8 / 3 | 4 | 8.33% | 2 | Vị trí 33 |
+| Khoảng 2 | 2 | `p00001` | `s092364643` | 405 | 61 | 5 | 12 / 5 | 7 | 11.48% | 3 | Vị trí 98 |
+| Khoảng 3 | 3 | `p02814` | `s915631953` | 660 | 148 | 7 | 27 / 7 | 20 | 13.51% | 4 | Vị trí 163 |
+| Khoảng 4 | 4 | `p03510` | `s583362876` | 629 | 71 | 5 | 16 / 7 | 11 | 15.49% | 3 | Vị trí 228 |
+| Khoảng 5 | 5 | `p00788` | `s998194081` | 344 | 71 | 4 | 16 / 8 | 12 | 16.90% | 3 | Vị trí 293 |
+| Khoảng 6 | 6 | `p03430` | `s601450783` | 349 | 33 | 2 | 8 / 7 | 6 | 18.18% | 4 | Vị trí 358 |
+| Khoảng 7 | 7 | `p00678` | `s961523709` | 398 | 56 | 4 | 15 / 6 | 11 | 19.64% | 2 | Vị trí 423 |
+| Khoảng 8 | 8 | `p00033` | `s763935897` | 492 | 62 | 2 | 15 / 12 | 13 | 20.97% | 4 | Vị trí 488 |
+| Khoảng 9 | 9 | `p01315` | `s212409236` | 461 | 49 | 3 | 14 / 10 | 11 | 22.45% | 4 | Vị trí 553 |
+| Khoảng 10 | 10 | `p02950` | `s864110221` | 462 | 63 | 2 | 17 / 14 | 15 | 23.81% | 4 | Vị trí 618 |
 
-| STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
-|---:|---|---|---:|---:|---:|---:|---:|---:|---:|
-| 1 | `p00865` | `s468269320` | 313 | 47 | 1 | 9 / 9 | 8 | 17.02% | 1 |
-| 2 | `p02823` | `s203760923` | 671 | 126 | 11 | 24 / 6 | 13 | 10.32% | 2 |
-| 3 | `p03766` | `s864522160` | 290 | 38 | 3 | 7 / 3 | 4 | 10.53% | 3 |
-| 4 | `p00112` | `s291444790` | 305 | 47 | 3 | 12 / 6 | 9 | 19.15% | 4 |
-| 5 | `p02408` | `s208157272` | 603 | 84 | 1 | 8 / 8 | 7 | 8.33% | 5 |
-| 6 | `p01620` | `s195341996` | 288 | 49 | 1 | 12 / 12 | 11 | 22.45% | 6 |
-| 7 | `p00137` | `s359649794` | 273 | 41 | 3 | 8 / 4 | 5 | 12.20% | 7 |
-| 8 | `p02984` | `s123818040` | 645 | 134 | 5 | 24 / 7 | 19 | 14.18% | 8 |
-| 9 | `p00355` | `s497485517` | 437 | 72 | 15 | 21 / 3 | 6 | 8.33% | 9 |
-| 10 | `p02023` | `s093543805` | 417 | 42 | 4 | 9 / 4 | 5 | 11.90% | 10 |
+### 8.2. Tầng `short_complex` (10 chương trình)
 
-### 7.2. Tầng `short_complex` (10 chương trình)
+| Khoảng | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Max Nesting | Vị trí trong tầng |
+|---:|---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Khoảng 1 | 1 | `p00693` | `s746355550` | 433 | 59 | 2 | 17 / 13 | 15 | 25.42% | 4 | Vị trí 33 |
+| Khoảng 2 | 2 | `p00008` | `s771404612` | 261 | 45 | 1 | 13 / 13 | 12 | 26.67% | 7 | Vị trí 98 |
+| Khoảng 3 | 3 | `p00859` | `s595927985` | 596 | 57 | 7 | 23 / 12 | 16 | 28.07% | 6 | Vị trí 163 |
+| Khoảng 4 | 4 | `p01687` | `s146593197` | 364 | 61 | 3 | 21 / 15 | 18 | 29.51% | 2 | Vị trí 228 |
+| Khoảng 5 | 5 | `p02100` | `s624710482` | 260 | 32 | 3 | 13 / 7 | 10 | 31.25% | 1 | Vị trí 293 |
+| Khoảng 6 | 6 | `p01970` | `s660972586` | 357 | 39 | 3 | 16 / 10 | 13 | 33.33% | 2 | Vị trí 358 |
+| Khoảng 7 | 7 | `p00165` | `s722254321` | 282 | 31 | 1 | 12 / 12 | 11 | 35.48% | 2 | Vị trí 423 |
+| Khoảng 8 | 8 | `p01766` | `s942434524` | 360 | 23 | 1 | 10 / 10 | 9 | 39.13% | 2 | Vị trí 488 |
+| Khoảng 9 | 9 | `p02474` | `s383039486` | 319 | 25 | 1 | 12 / 12 | 11 | 44.00% | 1 | Vị trí 553 |
+| Khoảng 10 | 10 | `p00327` | `s356526576` | 364 | 26 | 1 | 16 / 16 | 15 | 57.69% | 3 | Vị trí 618 |
 
-| STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
-|---:|---|---|---:|---:|---:|---:|---:|---:|---:|
-| 1 | `p03351` | `s931888234` | 291 | 27 | 6 | 14 / 5 | 8 | 29.63% | 1 |
-| 2 | `p01416` | `s682833506` | 522 | 50 | 2 | 22 / 17 | 20 | 40.00% | 2 |
-| 3 | `p00654` | `s287811369` | 447 | 51 | 4 | 17 / 6 | 13 | 25.49% | 3 |
-| 4 | `p00106` | `s428494792` | 623 | 78 | 1 | 22 / 22 | 21 | 26.92% | 4 |
-| 5 | `p02649` | `s653383049` | 542 | 46 | 1 | 20 / 20 | 19 | 41.30% | 5 |
-| 6 | `p02914` | `s457105888` | 559 | 48 | 6 | 23 / 12 | 17 | 35.42% | 6 |
-| 7 | `p01845` | `s071880245` | 258 | 40 | 2 | 13 / 7 | 11 | 27.50% | 7 |
-| 8 | `p01140` | `s539611760` | 420 | 56 | 1 | 17 / 17 | 16 | 28.57% | 8 |
-| 9 | `p02035` | `s741239259` | 399 | 26 | 4 | 11 / 4 | 7 | 26.92% | 9 |
-| 10 | `p01401` | `s694164582` | 547 | 46 | 2 | 15 / 13 | 13 | 28.26% | 10 |
+### 8.3. Tầng `long_simple` (10 chương trình)
 
-### 7.3. Tầng `long_simple` (10 chương trình)
+| Khoảng | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Max Nesting | Vị trí trong tầng |
+|---:|---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Khoảng 1 | 1 | `p03835` | `s836003439` | 1433 | 283 | 25 | 44 / 3 | 19 | 6.71% | 3 | Vị trí 33 |
+| Khoảng 2 | 2 | `p02289` | `s913513064` | 1103 | 263 | 8 | 37 / 8 | 29 | 11.03% | 4 | Vị trí 98 |
+| Khoảng 3 | 3 | `p00793` | `s729150918` | 991 | 68 | 7 | 16 / 4 | 9 | 13.24% | 1 | Vị trí 163 |
+| Khoảng 4 | 4 | `p03854` | `s574999050` | 912 | 114 | 15 | 32 / 9 | 17 | 14.91% | 2 | Vị trí 228 |
+| Khoảng 5 | 5 | `p03543` | `s082142762` | 1473 | 214 | 21 | 55 / 10 | 34 | 15.89% | 5 | Vị trí 293 |
+| Khoảng 6 | 6 | `p03434` | `s567580506` | 2348 | 304 | 34 | 85 / 8 | 51 | 16.78% | 3 | Vị trí 358 |
+| Khoảng 7 | 7 | `p03493` | `s344335879` | 1906 | 239 | 25 | 68 / 8 | 43 | 17.99% | 3 | Vị trí 423 |
+| Khoảng 8 | 8 | `p03773` | `s799607332` | 1133 | 146 | 15 | 44 / 8 | 29 | 19.86% | 3 | Vị trí 488 |
+| Khoảng 9 | 9 | `p03199` | `s752471056` | 1075 | 117 | 7 | 33 / 18 | 26 | 22.22% | 4 | Vị trí 553 |
+| Khoảng 10 | 10 | `p02788` | `s653265412` | 964 | 96 | 8 | 32 / 7 | 24 | 25.00% | 2 | Vị trí 618 |
 
-| STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
-|---:|---|---|---:|---:|---:|---:|---:|---:|---:|
-| 1 | `p03690` | `s129708539` | 1136 | 141 | 6 | 30 / 14 | 24 | 17.02% | 1 |
-| 2 | `p02597` | `s250905070` | 3264 | 439 | 39 | 109 / 10 | 70 | 15.95% | 2 |
-| 3 | `p03408` | `s637093083` | 1025 | 170 | 10 | 45 / 7 | 35 | 20.59% | 3 |
-| 4 | `p01013` | `s762634060` | 1134 | 86 | 11 | 19 / 7 | 8 | 9.30% | 4 |
-| 5 | `p03785` | `s315663229` | 1128 | 175 | 16 | 45 / 10 | 29 | 16.57% | 5 |
-| 6 | `p02562` | `s854703932` | 2781 | 251 | 4 | 59 / 33 | 55 | 21.91% | 6 |
-| 7 | `p02675` | `s985525149` | 1247 | 174 | 27 | 44 / 6 | 17 | 9.77% | 7 |
-| 8 | `p02298` | `s125615129` | 1785 | 206 | 27 | 52 / 9 | 25 | 12.14% | 8 |
-| 9 | `p03220` | `s260365906` | 792 | 101 | 14 | 25 / 4 | 11 | 10.89% | 9 |
-| 10 | `p03548` | `s937982714` | 1908 | 243 | 25 | 67 / 8 | 42 | 17.28% | 10 |
+### 8.4. Tầng `long_complex` (10 chương trình)
 
-### 7.4. Tầng `long_complex` (10 chương trình)
+| Khoảng | STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Max Nesting | Vị trí trong tầng |
+|---:|---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Khoảng 1 | 1 | `p01571` | `s327549193` | 1794 | 158 | 10 | 53 / 13 | 43 | 27.22% | 4 | Vị trí 33 |
+| Khoảng 2 | 2 | `p02029` | `s891773536` | 711 | 77 | 6 | 29 / 14 | 23 | 29.87% | 1 | Vị trí 98 |
+| Khoảng 3 | 3 | `p02477` | `s228971816` | 2580 | 273 | 9 | 97 / 45 | 88 | 32.23% | 4 | Vị trí 163 |
+| Khoảng 4 | 4 | `p01296` | `s236329906` | 1301 | 118 | 9 | 51 / 25 | 42 | 35.59% | 4 | Vị trí 228 |
+| Khoảng 5 | 5 | `p03006` | `s125302006` | 2646 | 157 | 50 | 112 / 11 | 62 | 39.49% | 5 | Vị trí 293 |
+| Khoảng 6 | 6 | `p03142` | `s710805295` | 5015 | 289 | 74 | 197 / 24 | 123 | 42.56% | 5 | Vị trí 358 |
+| Khoảng 7 | 7 | `p00867` | `s333068212` | 2108 | 140 | 14 | 78 / 21 | 64 | 45.71% | 4 | Vị trí 423 |
+| Khoảng 8 | 8 | `p03261` | `s577603531` | 2074 | 97 | 43 | 90 / 7 | 47 | 48.45% | 3 | Vị trí 488 |
+| Khoảng 9 | 9 | `p03776` | `s721771429` | 1735 | 81 | 5 | 55 / 25 | 50 | 61.73% | 3 | Vị trí 553 |
+| Khoảng 10 | 10 | `p03111` | `s152042503` | 2308 | 78 | 43 | 105 / 7 | 62 | 79.49% | 2 | Vị trí 618 |
 
-| STT | Problem ID | Submission ID | Token | NLOC | Hàm | CC total/max | Decision Points | CF Density | Selection Rank |
-|---:|---|---|---:|---:|---:|---:|---:|---:|---:|
-| 1 | `p01650` | `s182325312` | 854 | 65 | 3 | 32 / 18 | 29 | 44.62% | 1 |
-| 2 | `p02633` | `s706180112` | 2489 | 124 | 52 | 104 / 4 | 52 | 41.94% | 2 |
-| 3 | `p01537` | `s877582066` | 956 | 109 | 5 | 38 / 21 | 33 | 30.28% | 3 |
-| 4 | `p02787` | `s094317746` | 799 | 46 | 21 | 35 / 4 | 14 | 30.43% | 4 |
-| 5 | `p00335` | `s005302854` | 2302 | 111 | 46 | 98 / 6 | 52 | 46.85% | 5 |
-| 6 | `p00207` | `s580399766` | 870 | 116 | 6 | 45 / 16 | 39 | 33.62% | 6 |
-| 7 | `p02204` | `s730210185` | 2673 | 151 | 52 | 112 / 9 | 60 | 39.74% | 7 |
-| 8 | `p02650` | `s396437856` | 1374 | 108 | 3 | 45 / 41 | 42 | 38.89% | 8 |
-| 9 | `p02716` | `s293754775` | 2946 | 86 | 51 | 119 / 8 | 68 | 79.07% | 9 |
-| 10 | `p03780` | `s979265054` | 2345 | 122 | 46 | 104 / 12 | 58 | 47.54% | 10 |
+## 9. Tổng kết tập chương trình được chọn
 
-## 8. Tổng kết tập chương trình được chọn
+Tập 40 chương trình không được chọn thủ công. Trước hết chỉ giữ các chương trình C hợp lệ từ Project_CodeNet: Accepted, có input/output, token trong [256, 8000], biên dịch và chạy thành công sau khi làm rối bằng MIX3. Sau đó mỗi bài toán chỉ giữ một submission đại diện để tránh trùng lặp. Trên mã C gốc, nhóm tính `token_count`, `CF Density` và `max_nesting_depth`; từ đó chia dữ liệu thành bốn tầng: ngắn–đơn giản, ngắn–phức tạp, dài–đơn giản và dài–phức tạp. Trong mỗi tầng, các chương trình được sắp xếp theo độ phức tạp và chọn 10 chương trình nằm ở vị trí trung vị của 10 khoảng đại diện. Phương pháp chọn mẫu phân tầng theo khoảng trung vị giúp dữ liệu đại diện đều khắp các dải độ phức tạp, đồng thời hoàn toàn toán học và có thể tái lập.
 
-Tập 40 chương trình không được chọn thủ công. Trước hết chỉ giữ các chương trình C hợp lệ từ Project_CodeNet: Accepted, có input/output, token trong [256, 8000], biên dịch và chạy thành công sau khi làm rối bằng MIX3. Sau đó mỗi bài toán chỉ giữ một submission đại diện để tránh trùng lặp. Trên mã C gốc, nhóm tính `token_count` và `CF Density`; từ đó chia dữ liệu thành bốn tầng: ngắn–đơn giản, ngắn–phức tạp, dài–đơn giản và dài–phức tạp. Mỗi tầng chọn 10 chương trình bằng random seed cố định, nên kết quả có thể tái lập và không phụ thuộc vào lựa chọn chủ quan.
+## 10. Giới hạn của tập chọn
 
-## 9. Giới hạn của tập chọn
-
-Tập 40 chương trình này không nhằm đại diện thống kê cho toàn bộ Project_CodeNet. Đây là tập thực nghiệm có kiểm soát, dùng để đánh giá tính khả thi và độ bền của pipeline khi xử lý binary bị làm rối bằng một cấu hình kết hợp khó là MIX3. Do chỉ dùng MIX3, kết quả không tách riêng được lỗi do FLA, BCF hay INSTSUB gây ra.
+Tập 40 chương trình này không nhằm đại diện thống kê cho toàn bộ Project_CodeNet. Đây là tập thực nghiệm có kiểm soát, dùng để đánh giá tính khả thi và độ bền của pipeline khi xử lý binary bị làm rối bằng một cấu hình kết hợp khó là MIX3.
